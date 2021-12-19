@@ -2,7 +2,7 @@ package io.web;
 
 import chico.Chico;
 import com.google.gson.Gson;
-import io.Giga;
+import io.Kilo;
 import io.model.Business;
 import io.model.Role;
 import io.model.User;
@@ -12,7 +12,6 @@ import io.repo.UserRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import io.service.BusinessService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.validator.Var;
 import qio.Qio;
 import qio.annotate.*;
 import qio.annotate.verbs.Get;
@@ -175,20 +174,20 @@ public class BusinessHandler {
         }
 
         if(user.getPhone() != null){
-            user.setPhone(Giga.getPhone(user.getPhone()));
+            user.setPhone(Kilo.getPhone(user.getPhone()));
         }
 
         String password = Chico.dirty(user.getPassword());
         user.setPassword(password);
-        user.setDateJoined(Giga.getDate());
+        user.setDateJoined(Kilo.getDate());
         userRepo.save(user);
 
         User savedUser = userRepo.getSaved();
 
-        Role savedRole = roleRepo.find(Giga.CUSTOMER_ROLE);
+        Role savedRole = roleRepo.find(Kilo.CUSTOMER_ROLE);
         userRepo.saveUserRole(savedUser.getId(), savedRole.getId());
 
-        String permission = Giga.USER_MAINTENANCE + savedUser.getId();
+        String permission = Kilo.USER_MAINTENANCE + savedUser.getId();
         userRepo.savePermission(savedUser.getId(), permission);
 
         data.put("message", "Awesome, welcome as a valued member. Happy shopping!");

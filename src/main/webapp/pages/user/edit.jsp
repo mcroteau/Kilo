@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="chico.Chico" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
 
 <c:if test="${not empty message}">
@@ -42,7 +42,7 @@
 
 
 
-<%if(Chico.hasRole(Giga.SUPER_ROLE)){%>
+<%if(Chico.hasRole(Kilo.SUPER_ROLE)){%>
 	<form action="${pageContext.request.contextPath}/users/delete/${user.id}" method="post">
 		<div id="delete-user-container" style="width:100%;">
 			<input type="submit" class="button remove" value="Delete Account" style="width:100% !important;"/>

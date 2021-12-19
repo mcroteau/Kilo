@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
-${siteService.getBaseBit(Giga.HEAD, design, business, request)}
+${siteService.getBaseBit(Kilo.HEAD, design, business, request)}
 
     <h1>Congratulations!</h1>
     <h2>Order Placed! $${siteService.getPriceDos(sale.amount)}</h2>
@@ -58,4 +58,4 @@ ${siteService.getBaseBit(Giga.HEAD, design, business, request)}
         <input type="text" id="affiliate-amount" value="${sale.affiliateAmount}" disabled/>
     </div>
 
-${siteService.getBaseBit(Giga.BOTTOM, design, business, request)}
+${siteService.getBaseBit(Kilo.BOTTOM, design, business, request)}

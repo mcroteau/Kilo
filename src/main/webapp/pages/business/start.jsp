@@ -4,7 +4,7 @@
     <h1>Congratulations!</h1>
     <h3>Congratulations on starting your new business!</h3>
     <p>Holy Moly! Yes, we said holy moly.. we are just so excited
-    to have you using Giga!</p>
+    to have you using Kilo!</p>
 
     <h2>What's next? </h2>
     <p>Here is a checklist:</p>

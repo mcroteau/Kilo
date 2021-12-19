@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="chico" uri="/META-INF/tags/chico.tld" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
-${siteService.getBaseBit(Giga.HEAD, design, business, request)}
+${siteService.getBaseBit(Kilo.HEAD, design, business, request)}
 
 <style>
     #step-by-step{margin:10px auto 30px;width:370px;}
@@ -69,4 +69,4 @@ ${siteService.getBaseBit(Giga.HEAD, design, business, request)}
     </div>
 </form>
 
-${siteService.getBaseBit(Giga.BOTTOM, design, business, request)}
+${siteService.getBaseBit(Kilo.BOTTOM, design, business, request)}

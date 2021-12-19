@@ -12,5 +12,5 @@ No you may not redistribute!
 
 As the for the logo and overall design: 
 
-Copyright 2021 and on into the future the Giga logo all rights reserved.
+Copyright 2021 and on into the future the Kilo logo all rights reserved.
 Copyright 2021 and into the future the user experience design all rights reserved.

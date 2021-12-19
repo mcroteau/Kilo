@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -104,7 +104,7 @@ public class AssetService {
         User authUser = authService.getUser();
 
         Asset asset = (Asset) Qio.get(req, Asset.class);
-        asset.setDateAdded(Giga.getDate());
+        asset.setDateAdded(Kilo.getDate());
         asset.setUserId(authUser.getId());
 
         List<Part> fileParts = req.getParts()
@@ -115,17 +115,17 @@ public class AssetService {
         for (Part part : fileParts) {
             String original = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             InputStream is = part.getInputStream();
-            String ext = Giga.getExt(original);
-            String name = Giga.getString(6) + "." + ext;
+            String ext = Kilo.getExt(original);
+            String name = Kilo.getString(6) + "." + ext;
             seaService.send(name, is);
             asset.setMeta(name);
-            asset.setUri(Giga.OCEAN_ENDPOINT + name);
+            asset.setUri(Kilo.OCEAN_ENDPOINT + name);
         }
 
         assetRepo.save(asset);
 
         Asset savedAsset = assetRepo.getSaved();
-        String permission = Giga.ASSET_MAINTENANCE + savedAsset.getId();
+        String permission = Kilo.ASSET_MAINTENANCE + savedAsset.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         return "[redirect]/assets/" + savedAsset.getBusinessId();
@@ -149,7 +149,7 @@ public class AssetService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ASSET_MAINTENANCE + id;
+        String permission = Kilo.ASSET_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Whoa, people might be using this. Lol, this isn't yours.");

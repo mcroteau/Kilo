@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.BusinessRepo;
 import io.repo.DesignRepo;
@@ -79,7 +79,7 @@ public class PageService {
         Page page = (Page) Qio.get(req, Page.class);
         pageRepo.save(page);
         Page savedAsset = pageRepo.getSaved();
-        String permission = Giga.PAGE_MAINTENANCE + savedAsset.getId();
+        String permission = Kilo.PAGE_MAINTENANCE + savedAsset.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         return "[redirect]/pages/" + savedAsset.getBusinessId();
@@ -103,7 +103,7 @@ public class PageService {
             return "[redirect]/";
         }
 
-        String permission = Giga.PAGE_MAINTENANCE + id;
+        String permission = Kilo.PAGE_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Whoa, people might be using this. Lol, this isn't yours.");

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
 <c:if test="${not empty message}">
     <p class="notify">${message}</p>

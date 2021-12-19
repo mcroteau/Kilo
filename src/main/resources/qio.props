@@ -5,17 +5,17 @@ host=localhost:3000
 #host=yourdomain.com
 
 ### qio settings ###
-qio.env=create
+qio.env=create,drop
 qio.assets=benefit
 qio.properties=this
 
 ### database settings ###
-db.url=jdbc:h2:~/Giga
+db.url=jdbc:h2:~/Kilo
 db.driver=org.h2.Driver
 db.user=sa
 db.pass=
 
-#db.url=jdbc:h2:tcp://66.42.71.179:9092/~/Giga
+#db.url=jdbc:h2:tcp://66.42.71.179:9092/~/Kilo
 #db.driver=org.h2.Driver
 #db.user=sa
 #db.pass=

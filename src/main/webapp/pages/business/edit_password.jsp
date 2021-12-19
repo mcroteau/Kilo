@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
-${siteService.getBaseBit(Giga.HEAD, design, business, request)}
+${siteService.getBaseBit(Kilo.HEAD, design, business, request)}
 
 <div class="section-wrapper">
 	<div class="section">
@@ -36,5 +36,5 @@ ${siteService.getBaseBit(Giga.HEAD, design, business, request)}
 	</div>
 </div>
 
-${siteService.getBaseBit(Giga.BOTTOM, design, business, request)}
+${siteService.getBaseBit(Kilo.BOTTOM, design, business, request)}
 

@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
-${siteService.getBaseBit(Giga.HEAD, design, business, request)}
+${siteService.getBaseBit(Kilo.HEAD, design, business, request)}
 
     <h1>Select Shipping</h1>
     <p>Shipment weight : ${weight}oz</p>
@@ -37,4 +37,4 @@ ${siteService.getBaseBit(Giga.HEAD, design, business, request)}
     </address>
 
 
-${siteService.getBaseBit(Giga.BOTTOM, design, business, request)}
+${siteService.getBaseBit(Kilo.BOTTOM, design, business, request)}

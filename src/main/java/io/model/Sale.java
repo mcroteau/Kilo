@@ -1,7 +1,5 @@
 package io.model;
 
-import io.Giga;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

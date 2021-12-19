@@ -1,5 +1,5 @@
 import chico.Chico;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import io.service.*;
@@ -121,25 +121,25 @@ public class StoreTest {
         }
 
         RoleRepo roleRepo = (RoleRepo) Qio.getElement("rolerepo");
-        Role superRole = roleRepo.find(Giga.SUPER_ROLE);
-        Role businessRole = roleRepo.find(Giga.BUSINESS_ROLE);
-        Role customerRole = roleRepo.find(Giga.CUSTOMER_ROLE);
+        Role superRole = roleRepo.find(Kilo.SUPER_ROLE);
+        Role businessRole = roleRepo.find(Kilo.BUSINESS_ROLE);
+        Role customerRole = roleRepo.find(Kilo.CUSTOMER_ROLE);
 
         if(superRole == null){
             superRole = new Role();
-            superRole.setName(Giga.SUPER_ROLE);
+            superRole.setName(Kilo.SUPER_ROLE);
             roleRepo.save(superRole);
         }
 
         if(businessRole == null){
             businessRole = new Role();
-            businessRole.setName(Giga.BUSINESS_ROLE);
+            businessRole.setName(Kilo.BUSINESS_ROLE);
             roleRepo.save(businessRole);
         }
 
         if(customerRole == null){
             customerRole = new Role();
-            customerRole.setName(Giga.CUSTOMER_ROLE);
+            customerRole.setName(Kilo.CUSTOMER_ROLE);
             roleRepo.save(customerRole);
         }
 
@@ -226,12 +226,12 @@ public class StoreTest {
             Item item = new Item();
             item.setDesignId(iocDesign.getId());
             item.setBusinessId(savedIoc.getId());
-            item.setName("Giga Item " + Giga.getString(4));
-            item.setImageUri(Giga.OCEAN_ENDPOINT + Giga.ITEM_IMAGE);
+            item.setName("Kilo Item " + Kilo.getString(4));
+            item.setImageUri(Kilo.OCEAN_ENDPOINT + Kilo.ITEM_IMAGE);
             item.setPrice(new BigDecimal(45));
             item.setAffiliatePrice(new BigDecimal(45));
-            item.setQuantity(new BigDecimal(Giga.getNumber(30)));
-            item.setWeight(new BigDecimal(Giga.getNumber(48)));
+            item.setQuantity(new BigDecimal(Kilo.getNumber(30)));
+            item.setWeight(new BigDecimal(Kilo.getNumber(48)));
             item.setCost(new BigDecimal(50));
             itemRepo.save(item);
 

@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Giga {
+public class Kilo {
 
 	public static final Integer HEAD   = 0;
 	public static final Integer BOTTOM = 1;
@@ -106,7 +106,7 @@ public class Giga {
 
 	public static Long getDate(int days){
 		LocalDateTime ldt = LocalDateTime.now().minusDays(7);
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Giga.DATE_FORMAT);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Kilo.DATE_FORMAT);
 		String date = dtf.format(ldt);
 		System.out.println("date : " + date);
 		return Long.valueOf(date);
@@ -114,7 +114,7 @@ public class Giga {
 
 	public static Long getDate(){
 		LocalDateTime ldt = LocalDateTime.now();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Giga.DATE_FORMAT);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Kilo.DATE_FORMAT);
 		String date = dtf.format(ldt);
 		return Long.valueOf(date);
 	}
@@ -125,7 +125,7 @@ public class Giga {
 		ZoneOffset zoneOffset = zone.getRules().getOffset(ldt);
 		ZonedDateTime zdt = ldt.atOffset(zoneOffset)
 				.atZoneSameInstant(ZoneId.of(timezone));
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Giga.DATE_FORMAT);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Kilo.DATE_FORMAT);
 		String date = dtf.format(zdt);
 		return Long.valueOf(date);
 	}
@@ -136,7 +136,7 @@ public class Giga {
 		ZoneOffset zoneOffset = zone.getRules().getOffset(ldt);
 		ZonedDateTime zdt = ldt.atOffset(zoneOffset)
 				.atZoneSameInstant(ZoneId.of(timezone));
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Giga.DATE_FORMAT);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Kilo.DATE_FORMAT);
 		String date = dtf.format(zdt);
 		return Long.parseLong(date);
 	}
@@ -151,10 +151,10 @@ public class Giga {
 	public static String getPretty(Long date){
 		String dateString = "";
 		try {
-			SimpleDateFormat parser = new SimpleDateFormat(Giga.DATE_FORMAT);
+			SimpleDateFormat parser = new SimpleDateFormat(Kilo.DATE_FORMAT);
 			Date d = parser.parse(Long.toString(date));
 
-			SimpleDateFormat sdf2 = new SimpleDateFormat(Giga.DATE_PRETTY);
+			SimpleDateFormat sdf2 = new SimpleDateFormat(Kilo.DATE_PRETTY);
 			dateString = sdf2.format(d);
 		}catch(Exception ex){}
 		return dateString;

@@ -1,4 +1,4 @@
-﻿Giga
+﻿Kilo
 ====
 
 ### Run Me.
@@ -7,7 +7,7 @@
 
 then browse to : 
 
-```http://localhost:3001```
+```http://localhost:3000```
 
 Signin : 
 
@@ -25,13 +25,6 @@ password :
 * Java 11 or newer
 * Maven
 
-
-
-### Fixes
-Authenticated user shipment created fix on checkout
-Stripe onboarding complete 
-Affliate Signup
-Cleanup
 
 
 

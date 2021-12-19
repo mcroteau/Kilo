@@ -12,7 +12,7 @@ import java.util.Set;
 public class MockServletContext implements ServletContext {
     @Override
     public String getContextPath() {
-        return "/Giga";
+        return "/Kilo";
     }
 
     @Override

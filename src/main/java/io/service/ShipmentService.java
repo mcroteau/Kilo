@@ -6,8 +6,8 @@ import com.easypost.exception.EasyPostException;
 import com.easypost.model.Address;
 import com.easypost.model.Rate;
 import com.easypost.model.Shipment;
+import io.Kilo;
 import jakarta.servlet.http.HttpServletRequest;
-import io.Giga;
 import io.model.*;
 import io.repo.*;
 import qio.Qio;
@@ -72,13 +72,13 @@ public class ShipmentService {
         User shipUser = (User) Qio.get(req, User.class);
 
         String phone = "";
-        if(shipUser.getPhone() != null) phone = Giga.getPhone(shipUser.getPhone());
+        if(shipUser.getPhone() != null) phone = Kilo.getPhone(shipUser.getPhone());
 
         User storedPhone = userRepo.getPhone(phone);
         if(storedPhone == null){
             User storedUsername = userRepo.get(shipUser.getUsername());
             if(storedUsername == null){
-                shipUser.setDateJoined(Giga.getDate());
+                shipUser.setDateJoined(Kilo.getDate());
                 shipUser.setPassword(Chico.dirty("gigabeat"));
                 userRepo.save(shipUser);
                 storedPhone = userRepo.getSaved();
@@ -158,7 +158,7 @@ public class ShipmentService {
 
 
             List<Rate> rates = shipment.getRates();
-            Giga.sortRates(rates);
+            Kilo.sortRates(rates);
 
             data.set("message", "Shipping calculated!");
             data.set("shipment", shipment);
@@ -291,18 +291,18 @@ public class ShipmentService {
         System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\n\n");
 
         String phone = "";
-        if(user.getPhone() != null) phone = Giga.getPhone(user.getPhone());
+        if(user.getPhone() != null) phone = Kilo.getPhone(user.getPhone());
 
         String username = "";
         if(user.getUsername() != null){
-            username = Giga.getSpaces(user.getUsername());
+            username = Kilo.getSpaces(user.getUsername());
         }
 
         User storedUsername = userRepo.get(username);
         if (storedUsername == null) {
             User storedPhone = userRepo.getPhone(phone);
             if(storedPhone == null){
-                user.setDateJoined(Giga.getDate());
+                user.setDateJoined(Kilo.getDate());
                 user.setPassword(Chico.dirty("gigabeat"));
                 userRepo.save(user);
                 storedUsername = userRepo.getSaved();

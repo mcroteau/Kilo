@@ -68,22 +68,22 @@
         <h1>Features</h1>
 
         <p>Customize this as your Homepage, *affiliate registration requires at
-            least one entity to be registered with this application. What you get with Giga:</p>
+            least one entity to be registered with this application. What you get with Kilo:</p>
 
-        <p><strong>Multi-Business</strong> One or many shops, you decide. Running multiple shops at once on Giga is a breeze.</p>
+        <p><strong>Multi-Business</strong> One or many shops, you decide. Running multiple shops at once on Kilo is a breeze.</p>
 
-        <p><strong>Resellers Logic</strong> That's right, with Giga, you can allow your companies to operate as affiliates.</p>
+        <p><strong>Resellers Logic</strong> That's right, with Kilo, you can allow your companies to operate as affiliates.</p>
 
-        <p><strong>Multi-Design</strong> Completely customizable designs, and to boot Giga boasts a design per page, item and category.</p>
+        <p><strong>Multi-Design</strong> Completely customizable designs, and to boot Kilo boasts a design per page, item and category.</p>
 
         <p><strong>Multi-Option</strong> Items can have multiple options or dimensions and variants with additional pricing. These can
             include things Size, Weight & Color.</p>
 
-        <p><strong>Fully Functional Content Management System (CMS)</strong> Giga touts as a fully functional CMS system as well.
-        If you want to run Giga as a plain site, it will do the job. </p>
+        <p><strong>Fully Functional Content Management System (CMS)</strong> Kilo touts as a fully functional CMS system as well.
+        If you want to run Kilo as a plain site, it will do the job. </p>
 
         <p><strong>Simple Item Import</strong> Importing items should be easy, in previous attempts
-            we fell short and relied on spreadsheets. With Giga, all you need is a little bit of
+            we fell short and relied on spreadsheets. With Kilo, all you need is a little bit of
             up front work and items are easily imported on the fly, and we
             didn't rely on China to create it for us. Go USA!</p>
 
@@ -92,7 +92,7 @@
 
         <p><strong>Ease of Maintenance</strong> We made sure to make shop maintenance a breeze. Give it a try!</p>
 
-        <p><strong>Designed for Web Developers</strong> Giga aint no fancy drag and drop development system, it expects you to know how to design and write
+        <p><strong>Designed for Web Developers</strong> Kilo aint no fancy drag and drop development system, it expects you to know how to design and write
         beautiful Html + Css + Javascript user experiences and allows you to do such.</p>
 
         <div class="align-center" style="margin:30px 0px 60px">
@@ -110,7 +110,7 @@
             Better yet, friends program,
             if you like them so much why don't
             you marry em'.
-            On Giga, you can pick a business
+            On Kilo, you can pick a business
             or a product you are excited about and create an online
             store their behalf. You get a copy of all of their items &
             categories and set pricing on demand.</p>

@@ -1,7 +1,7 @@
 import chico.Chico;
 import chico.ChicoFilter;
 import chico.support.DbSecurityAccess;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import io.service.AuthService;
@@ -10,7 +10,6 @@ import io.service.ItemService;
 import io.support.DbAccess;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.*;
@@ -19,9 +18,7 @@ import qio.Qio;
 import qio.model.web.ResponseData;
 import qio.support.DbMediator;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -140,22 +137,22 @@ public class MaintenanceTest {
         UserRepo userRepo = (UserRepo) Qio.getElement("userrepo");
         RoleRepo roleRepo = (RoleRepo) Qio.getElement("rolerepo");
 
-        Role superRole = roleRepo.find(Giga.SUPER_ROLE);
-        Role businessRole = roleRepo.find(Giga.BUSINESS_ROLE);
+        Role superRole = roleRepo.find(Kilo.SUPER_ROLE);
+        Role businessRole = roleRepo.find(Kilo.BUSINESS_ROLE);
 
         if(superRole == null){
             superRole = new Role();
-            superRole.setName(Giga.SUPER_ROLE);
+            superRole.setName(Kilo.SUPER_ROLE);
             roleRepo.save(superRole);
         }
 
         if(businessRole == null){
             businessRole = new Role();
-            businessRole.setName(Giga.BUSINESS_ROLE);
+            businessRole.setName(Kilo.BUSINESS_ROLE);
             roleRepo.save(businessRole);
         }
 
-        Role savedBusinessRole = roleRepo.get(Giga.BUSINESS_ROLE);
+        Role savedBusinessRole = roleRepo.get(Kilo.BUSINESS_ROLE);
 
         User iocUser = new User();
         iocUser.setUsername("croteau.mike+ioc@gmail.com");
@@ -168,12 +165,12 @@ public class MaintenanceTest {
         ibmUser.setPhone("9079878652");
         ibmUser.setUsername("croteau.mike+ibm@gmail.com");
         ibmUser.setPassword(Chico.dirty("password"));
-        ibmUser.setDateJoined(Giga.getDate());
+        ibmUser.setDateJoined(Kilo.getDate());
         userRepo.save(ibmUser);
         User savedIbmUser = userRepo.getSaved();
 
         userRepo.saveUserRole(savedIbmUser.getId(), savedBusinessRole.getId());
-        String permission = Giga.USER_MAINTENANCE + savedIbmUser.getId();
+        String permission = Kilo.USER_MAINTENANCE + savedIbmUser.getId();
         userRepo.savePermission(savedIbmUser.getId(), permission);
 
         BusinessRepo businessRepo = (BusinessRepo) Qio.getElement("businessrepo");
@@ -184,7 +181,7 @@ public class MaintenanceTest {
 
         this.savedIbm = businessRepo.getSaved();
 
-        String ibmPermission = Giga.BUSINESS_MAINTENANCE + savedIbm.getId();
+        String ibmPermission = Kilo.BUSINESS_MAINTENANCE + savedIbm.getId();
         userRepo.savePermission(savedIbmUser.getId(), ibmPermission);
 
         BusinessService businessService = (BusinessService) Qio.getElement("businessService");
@@ -210,24 +207,24 @@ public class MaintenanceTest {
         categoryRepo.save(shopCategory);
         this.savedCategory = categoryRepo.getSaved();
 
-        String categoryPermission = Giga.CATEGORY_MAINTENANCE + savedCategory.getId();
+        String categoryPermission = Kilo.CATEGORY_MAINTENANCE + savedCategory.getId();
         userRepo.savePermission(savedIbmUser.getId(), categoryPermission);
 
         Item item = new Item();
         item.setDesignId(ibmDesign.getId());
         item.setBusinessId(savedIbm.getId());
-        item.setName("Giga Item " + Giga.getString(4));
-        item.setImageUri(Giga.OCEAN_ENDPOINT + Giga.ITEM_IMAGE);
+        item.setName("Kilo Item " + Kilo.getString(4));
+        item.setImageUri(Kilo.OCEAN_ENDPOINT + Kilo.ITEM_IMAGE);
         item.setPrice(new BigDecimal(45));
         item.setAffiliatePrice(new BigDecimal(45));
-        item.setQuantity(new BigDecimal(Giga.getNumber(30)));
-        item.setWeight(new BigDecimal(Giga.getNumber(48)));
+        item.setQuantity(new BigDecimal(Kilo.getNumber(30)));
+        item.setWeight(new BigDecimal(Kilo.getNumber(48)));
         item.setCost(new BigDecimal(50));
         itemRepo.save(item);
 
         this.savedItem = itemRepo.getSaved();
 
-        String itemPermission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+        String itemPermission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
         userRepo.savePermission(savedIbmUser.getId(), itemPermission);
     }
 

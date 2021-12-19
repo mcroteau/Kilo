@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 <%@ page import="io.model.Item" %>
 <%@ page import="java.util.List" %>
 
-${siteService.getCategoryBit(Giga.HEAD, category, business, request)}
+${siteService.getCategoryBit(Kilo.HEAD, category, business, request)}
 
 <style>
 
@@ -58,5 +58,5 @@ ${category.header}
     <p>No items created yet for ${category.name}!<br/>Check back later!</p>
 </c:if>
 
-${siteService.getCategoryBit(Giga.BOTTOM, category, business, request)}
+${siteService.getCategoryBit(Kilo.BOTTOM, category, business, request)}
 

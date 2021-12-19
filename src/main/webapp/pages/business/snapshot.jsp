@@ -58,7 +58,7 @@
     </c:if>
 
     <p class="right-float" style="font-size:18px;width:40%;line-height:1.50em;" >
-        Giga fights for the right to Data! Who's better at Data than Google?
+        Kilo fights for the right to Data! Who's better at Data than Google?
         Their search engine is the best, so isn't Google Analytics!
         Simple and easy to setup and the most thorough solution on the market hands down! Best of
         all, it is free. No we are not Google, we just want them to buy us out!

@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.AssetRepo;
 import io.repo.DesignRepo;
@@ -67,7 +67,7 @@ public class DesignService {
         designRepo.save(design);
 
         Design savedDesign = designRepo.getSaved();
-        String permission = Giga.DESIGN_MAINTENANCE + savedDesign.getId();
+        String permission = Kilo.DESIGN_MAINTENANCE + savedDesign.getId();
         userRepo.savePermission(authdUser.getId(), permission);
 
         return "[redirect]/designs/" + savedDesign.getBusinessId();
@@ -79,7 +79,7 @@ public class DesignService {
             return "[redirect]/";
         }
 
-        String permission = Giga.DESIGN_MAINTENANCE + id;
+        String permission = Kilo.DESIGN_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this design.");
@@ -102,7 +102,7 @@ public class DesignService {
             return "[redirect]/";
         }
 
-        String permission = Giga.DESIGN_MAINTENANCE + id;
+        String permission = Kilo.DESIGN_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this design.");
@@ -120,7 +120,7 @@ public class DesignService {
             return "[redirect]/";
         }
 
-        String permission = Giga.DESIGN_MAINTENANCE + id;
+        String permission = Kilo.DESIGN_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this design.");

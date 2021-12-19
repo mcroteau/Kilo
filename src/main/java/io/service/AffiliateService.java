@@ -1,7 +1,7 @@
 package io.service;
 
 import chico.Chico;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +48,7 @@ public class AffiliateService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             return "[redirect]/";
@@ -79,7 +79,7 @@ public class AffiliateService {
     public String getOnboarding(ResponseData data, HttpServletRequest req) {
         List<Business> businesses = businessRepo.getListPrimary();
         data.set("businesses", businesses);
-        data.set("title", "Giga! Partners Signup");
+        data.set("title", "Kilo! Partners Signup");
         data.set("page", "/pages/affiliate/onboarding.jsp");
         return "/designs/guest.jsp";
     }
@@ -108,13 +108,13 @@ public class AffiliateService {
 
     public String begin(ResponseData data, HttpServletRequest req) {
         BusinessRequest businessRequest = (BusinessRequest) Qio.get(req, BusinessRequest.class);
-        businessRequest.setGuid(Giga.getString(7));
+        businessRequest.setGuid(Kilo.getString(7));
         businessRepo.saveRequest(businessRequest);
 
         Business business = businessRepo.get(businessRequest.getBusinessId());
         User user = userRepo.get(business.getUserId());
         BusinessRequest savedRequest = businessRepo.getSavedRequest();
-        String requestPermission = Giga.REQUEST_MAINTENANCE + savedRequest.getId();
+        String requestPermission = Kilo.REQUEST_MAINTENANCE + savedRequest.getId();
         userRepo.savePermission(user.getId(), requestPermission);
 
         data.set("message", "Successfully submitted your application to become an business partner!");
@@ -129,7 +129,7 @@ public class AffiliateService {
             return "[redirect]/";
         }
 
-        String permission = Giga.REQUEST_MAINTENANCE + businessRequest.getId();
+        String permission = Kilo.REQUEST_MAINTENANCE + businessRequest.getId();
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             return "[redirect]/";
@@ -152,7 +152,7 @@ public class AffiliateService {
             return "[redirect]/";
         }
 
-        String permission = Giga.REQUEST_MAINTENANCE + businessRequest.getId();
+        String permission = Kilo.REQUEST_MAINTENANCE + businessRequest.getId();
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             return "[redirect]/";
@@ -172,7 +172,7 @@ public class AffiliateService {
 
         Business business = new Business();
         business.setName(businessRequest.getBusinessName());
-        business.setUri(Giga.getUri(businessRequest.getBusinessName()));
+        business.setUri(Kilo.getUri(businessRequest.getBusinessName()));
         businessRepo.save(business);
 
         Business savedBusiness = businessRepo.getSaved();
@@ -215,9 +215,9 @@ public class AffiliateService {
             }
 
             User user = new User();
-            user.setDateJoined(Giga.getDate());
-            user.setPhone(Giga.getPhone(business.getPhone()));
-            user.setUsername(Giga.getSpaces(business.getEmail()));
+            user.setDateJoined(Kilo.getDate());
+            user.setPhone(Kilo.getPhone(business.getPhone()));
+            user.setUsername(Kilo.getSpaces(business.getEmail()));
             user.setName(business.getOwner());
             user.setPassword(Chico.dirty(business.getPassword()));
             userRepo.save(user);
@@ -228,15 +228,15 @@ public class AffiliateService {
             business.setUserId(savedUser.getId());
             businessRepo.update(business);
 
-            String userPermission = Giga.USER_MAINTENANCE + savedUser.getId();
+            String userPermission = Kilo.USER_MAINTENANCE + savedUser.getId();
             userRepo.savePermission(savedUser.getId(), userPermission);
 
-            Role businessRole = roleRepo.get(Giga.BUSINESS_ROLE);
+            Role businessRole = roleRepo.get(Kilo.BUSINESS_ROLE);
             userRepo.saveUserRole(savedUser.getId(), businessRole.getId());
-            Role clientRole = roleRepo.get(Giga.CUSTOMER_ROLE);
+            Role clientRole = roleRepo.get(Kilo.CUSTOMER_ROLE);
             userRepo.saveUserRole(savedUser.getId(), clientRole.getId());
 
-            String businessPermission = Giga.BUSINESS_MAINTENANCE + business.getId();
+            String businessPermission = Kilo.BUSINESS_MAINTENANCE + business.getId();
             userRepo.savePermission(savedUser.getId(), businessPermission);
 
             UserBusiness userBusiness = new UserBusiness();
@@ -260,7 +260,7 @@ public class AffiliateService {
                 copiedItem.setDesignId(savedDesign.getId());
                 itemRepo.save(item);
                 Item savedItem = itemRepo.getSaved();
-                String itemPermission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+                String itemPermission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
                 userRepo.savePermission(savedUser.getId(), itemPermission);
 
                 for(ItemCategory itemCategory : itemCategories){
@@ -275,7 +275,7 @@ public class AffiliateService {
                         categoryRepo.save(categoryDos);
                         storedCategory = categoryRepo.getSaved();
 
-                        String categoryPermission = Giga.ITEM_MAINTENANCE + storedCategory.getId();
+                        String categoryPermission = Kilo.ITEM_MAINTENANCE + storedCategory.getId();
                         userRepo.savePermission(savedUser.getId(), categoryPermission);
                     }
 

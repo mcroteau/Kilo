@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import chico.Chico;
@@ -52,33 +52,33 @@ public class StartupService {
     public void start() throws Exception {
 
         Chico.configure(dbAccess);
-        String password = Chico.dirty(Giga.SUPER_PASSWORD);
+        String password = Chico.dirty(Kilo.SUPER_PASSWORD);
 
-        Role superRole = roleRepo.find(Giga.SUPER_ROLE);
-        Role businessRole = roleRepo.find(Giga.BUSINESS_ROLE);
-        Role customerRole = roleRepo.find(Giga.CUSTOMER_ROLE);
+        Role superRole = roleRepo.find(Kilo.SUPER_ROLE);
+        Role businessRole = roleRepo.find(Kilo.BUSINESS_ROLE);
+        Role customerRole = roleRepo.find(Kilo.CUSTOMER_ROLE);
 
         if(superRole == null){
             superRole = new Role();
-            superRole.setName(Giga.SUPER_ROLE);
+            superRole.setName(Kilo.SUPER_ROLE);
             roleRepo.save(superRole);
         }
 
         if(businessRole == null){
             businessRole = new Role();
-            businessRole.setName(Giga.BUSINESS_ROLE);
+            businessRole.setName(Kilo.BUSINESS_ROLE);
             roleRepo.save(businessRole);
         }
 
         if(customerRole == null){
             customerRole = new Role();
-            customerRole.setName(Giga.CUSTOMER_ROLE);
+            customerRole.setName(Kilo.CUSTOMER_ROLE);
             roleRepo.save(customerRole);
         }
 
 
-        Role savedBusinessRole = roleRepo.get(Giga.BUSINESS_ROLE);
-        Role savedCustomerRole = roleRepo.get(Giga.CUSTOMER_ROLE);
+        Role savedBusinessRole = roleRepo.get(Kilo.BUSINESS_ROLE);
+        Role savedCustomerRole = roleRepo.get(Kilo.CUSTOMER_ROLE);
 
     }
 
@@ -88,12 +88,12 @@ public class StartupService {
         User patron = new User();
         patron.setUsername("croteau.mike+patron@gmail.com");
         patron.setPassword(password);
-        patron.setDateJoined(Giga.getDate());
+        patron.setDateJoined(Kilo.getDate());
         userRepo.save(patron);
         User savedPatron = userRepo.getSaved();
 
         userRepo.saveUserRole(savedPatron.getId(), savedCustomerRole.getId());
-        String patronPermission = Giga.USER_MAINTENANCE + savedPatron.getId();
+        String patronPermission = Kilo.USER_MAINTENANCE + savedPatron.getId();
         userRepo.savePermission(savedPatron.getId(), patronPermission);
 
         //////// business user ////////
@@ -102,7 +102,7 @@ public class StartupService {
         ibmUser.setPhone("9079878652");
         ibmUser.setUsername("croteau.mike+ibm@gmail.com");
         ibmUser.setPassword(password);
-        ibmUser.setDateJoined(Giga.getDate());
+        ibmUser.setDateJoined(Kilo.getDate());
         userRepo.save(ibmUser);
         User savedIbmUser = userRepo.getSaved();
 
@@ -118,7 +118,7 @@ public class StartupService {
         userRepo.update(savedIbmUser);
 
         userRepo.saveUserRole(savedIbmUser.getId(), savedBusinessRole.getId());
-        String permission = Giga.USER_MAINTENANCE + savedIbmUser.getId();
+        String permission = Kilo.USER_MAINTENANCE + savedIbmUser.getId();
         userRepo.savePermission(savedIbmUser.getId(), permission);
 
 
@@ -141,7 +141,7 @@ public class StartupService {
         savedKopi.setStripeId("acct_1Juk6N2HqO73ZqT6");
         businessRepo.update(savedKopi);
 
-        String ibmPermission = Giga.BUSINESS_MAINTENANCE + savedKopi.getId();
+        String ibmPermission = Kilo.BUSINESS_MAINTENANCE + savedKopi.getId();
         userRepo.savePermission(savedIbmUser.getId(), ibmPermission);
         try {
             businessService.configure(savedKopi, true);
@@ -166,17 +166,17 @@ public class StartupService {
             Item item = new Item();
             item.setDesignId(designRepo.getSaved().getId());
             item.setBusinessId(savedKopi.getId());
-            item.setName("Giga Item " + Giga.getString(4));
-            item.setImageUri(Giga.OCEAN_ENDPOINT + Giga.ITEM_IMAGE);
+            item.setName("Kilo Item " + Kilo.getString(4));
+            item.setImageUri(Kilo.OCEAN_ENDPOINT + Kilo.ITEM_IMAGE);
             item.setPrice(new BigDecimal(45));
-            item.setQuantity(new BigDecimal(Giga.getNumber(30)));
-            item.setWeight(new BigDecimal(Giga.getNumber(48)));
+            item.setQuantity(new BigDecimal(Kilo.getNumber(30)));
+            item.setWeight(new BigDecimal(Kilo.getNumber(48)));
             item.setCost(new BigDecimal(50));
             itemRepo.save(item);
 
             Item savedItem = itemRepo.getSaved();
 
-            String itemPermission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+            String itemPermission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
             userRepo.savePermission(savedIbmUser.getId(), itemPermission);
 
             ItemCategory itemCategory = new ItemCategory(savedItem.getId(), mensCategory.getId(), savedKopi.getId());
@@ -224,7 +224,7 @@ public class StartupService {
             CartItem cartItem = new CartItem();
             cartItem.setItemId(savedItem.getId());
             cartItem.setPrice(savedItem.getPrice());
-            cartItem.setQuantity(new BigDecimal(Giga.getNumber(4)));
+            cartItem.setQuantity(new BigDecimal(Kilo.getNumber(4)));
             cartItem.setCartId(savedCart.getId());
             cartItem.setBusinessId(savedKopi.getId());
             cartRepo.saveItem(cartItem);
@@ -242,8 +242,8 @@ public class StartupService {
                 savedCart.setSale(true);
                 savedCart.setActive(false);
 
-                savedCart.setShipName(Giga.getString(4) + " " + Giga.getString(7));
-                savedCart.setShipEmail("croteau.mike+" + Giga.getString(3) + "@gmail.com");
+                savedCart.setShipName(Kilo.getString(4) + " " + Kilo.getString(7));
+                savedCart.setShipEmail("croteau.mike+" + Kilo.getString(3) + "@gmail.com");
                 savedCart.setShipPhone("9079878652");
                 savedCart.setShipStreet("1097 Park Dr");
                 savedCart.setShipStreetDos("");
@@ -258,7 +258,7 @@ public class StartupService {
                 sale.setUserId(savedPatron.getId());
                 sale.setCartId(savedCart.getId());
                 sale.setAmount(savedCart.getTotal());
-                sale.setSalesDate(Giga.getDate());
+                sale.setSalesDate(Kilo.getDate());
                 saleRepo.save(sale);
 
                 Sale savedSale = saleRepo.getSaved();
@@ -304,7 +304,7 @@ public class StartupService {
         savedImDone.setStripeId("acct_1K0gwt2HGj2rN0Zk");
 
         businessRepo.update(savedImDone);
-        String imDonePermission = Giga.BUSINESS_MAINTENANCE + savedImDone.getId();
+        String imDonePermission = Kilo.BUSINESS_MAINTENANCE + savedImDone.getId();
         userRepo.savePermission(savedGraphiteUser.getId(), imDonePermission);
 
         try {
@@ -328,23 +328,23 @@ public class StartupService {
 
         Category savedCategory = categoryRepo.getSaved();
 
-        String categoryPermission = Giga.CATEGORY_MAINTENANCE + savedCategory.getId();
+        String categoryPermission = Kilo.CATEGORY_MAINTENANCE + savedCategory.getId();
         userRepo.savePermission(savedIbmUser.getId(), categoryPermission);
 
         Item item = new Item();
         item.setDesignId(designRepo.getSaved().getId());
         item.setBusinessId(savedImDone.getId());
-        item.setName("Giga Item " + Giga.getString(3));
-        item.setImageUri(Giga.OCEAN_ENDPOINT + Giga.ITEM_IMAGE);
+        item.setName("Kilo Item " + Kilo.getString(3));
+        item.setImageUri(Kilo.OCEAN_ENDPOINT + Kilo.ITEM_IMAGE);
         item.setPrice(new BigDecimal(45));
-        item.setQuantity(new BigDecimal(Giga.getNumber(30)));
-        item.setWeight(new BigDecimal(Giga.getNumber(48)));
+        item.setQuantity(new BigDecimal(Kilo.getNumber(30)));
+        item.setWeight(new BigDecimal(Kilo.getNumber(48)));
         item.setCost(new BigDecimal(20));
         itemRepo.save(item);
 
         Item savedItem = itemRepo.getSaved();
 
-        String itemPermission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+        String itemPermission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
         userRepo.savePermission(savedIbmUser.getId(), itemPermission);
 
         ItemCategory shopItem = new ItemCategory(savedItem.getId(), savedCategory.getId(), savedImDone.getId());
@@ -356,7 +356,7 @@ public class StartupService {
         businessRequest.setEmail("croteau.mike+ioc@gmail.com");
         businessRequest.setBusinessId(savedKopi.getId());
         businessRequest.setBusinessName("IOC");
-        businessRequest.setGuid(Giga.getString(6));
+        businessRequest.setGuid(Kilo.getString(6));
         businessRequest.setName("Mike");
         businessRequest.setPhone("9079878652");
         businessRequest.setNotes("Please let me sell your stuff beauty queen.");
@@ -375,7 +375,7 @@ public class StartupService {
         Category category = new Category();
         category.setName(name);
         category.setUri(name.toLowerCase());
-        category.setHeader(Giga.getString(7));
+        category.setHeader(Kilo.getString(7));
         category.setBusinessId(businessId);
         category.setDesignId(designRepo.getSaved().getId());
         if(categoryId == null) category.setTopLevel(true);
@@ -383,7 +383,7 @@ public class StartupService {
         categoryRepo.save(category);
         Category savedCategory = categoryRepo.getSaved();
 
-        String permission = Giga.CATEGORY_MAINTENANCE + savedCategory.getId();
+        String permission = Kilo.CATEGORY_MAINTENANCE + savedCategory.getId();
         userRepo.savePermission(user.getId(), permission);
 
         return savedCategory;

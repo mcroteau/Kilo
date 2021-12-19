@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
-${siteService.getPageBit(Giga.HEAD, page, business, request)}
+${siteService.getPageBit(Kilo.HEAD, page, business, request)}
 
 <c:if test="${not empty message}">
     <p class="notify">${message}</p>
@@ -9,4 +9,4 @@ ${siteService.getPageBit(Giga.HEAD, page, business, request)}
 
 ${page.content}
 
-${siteService.getPageBit(Giga.BOTTOM, page, business, request)}
+${siteService.getPageBit(Kilo.BOTTOM, page, business, request)}

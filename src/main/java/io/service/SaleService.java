@@ -1,14 +1,11 @@
 package io.service;
 
 import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import com.stripe.model.Customer;
 import com.stripe.model.Token;
-import com.stripe.model.Transfer;
 import com.stripe.net.RequestOptions;
-import com.stripe.param.TransferCreateParams;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,7 +77,7 @@ public class SaleService {
 
         Sale sale = new Sale();
         sale.setCartId(cart.getId());
-        sale.setSalesDate(Giga.getDate());
+        sale.setSalesDate(Kilo.getDate());
         sale.setUserId(cart.getUserId());
         sale.setAmount(cart.getTotal());
         System.out.println("cart sum, " + cart.getTotal());
@@ -224,10 +221,10 @@ public class SaleService {
 
         cartRepo.update(cart);
 
-        smsService.send("9079878652", "Giga >_ An order has been placed!");
+        smsService.send("9079878652", "Kilo >_ An order has been placed!");
 
         if(!business.getPhone().equals("")) {
-            smsService.send(business.getPhone(), "Giga >_ Congratulations, an order has been placed!");
+            smsService.send(business.getPhone(), "Kilo >_ Congratulations, an order has been placed!");
         }
 
         if(!cart.getShipPhone().equals("")) {
@@ -318,7 +315,7 @@ public class SaleService {
                 cartItem.setCartOptions(cartOptions);
             }
 
-            SimpleDateFormat format = new SimpleDateFormat(Giga.DATE_FORMAT);
+            SimpleDateFormat format = new SimpleDateFormat(Kilo.DATE_FORMAT);
             Date date = format.parse(Long.toString(sale.getSalesDate()));
             PrettyTime p = new PrettyTime();
             String prettyDate = p.format(date);

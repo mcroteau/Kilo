@@ -1,7 +1,7 @@
 package io.web;
 
 import chico.Chico;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import io.service.*;
@@ -172,13 +172,13 @@ public class UserHandler {
 		if(business == null)return "[redirect]/";
 
 		User user = (User) qio.set(req, User.class);
-		String phone = Giga.getPhone(user.getPhone());
+		String phone = Kilo.getPhone(user.getPhone());
 		if(phone.equals(""))return "[redirect]/" + shopUri;
 
 		User storedUser = userRepo.getPhone(phone);
 		if(storedUser == null)return "[redirect]/" + shopUri;
 
-		String password = Giga.getString(6);
+		String password = Kilo.getString(6);
 		storedUser.setPassword(Chico.dirty(password));
 		userRepo.updatePassword(storedUser);
 

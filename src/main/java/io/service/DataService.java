@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -69,12 +69,12 @@ public class DataService {
         DataImport dataImport = new DataImport();
         dataImport.setBusinessId(businessId);
         dataImport.setUserId(authUser.getId());
-        dataImport.setDateImport(Giga.getDate());
+        dataImport.setDateImport(Kilo.getDate());
         dataImport.setType("media");
         dataRepo.save(dataImport);
 
         DataImport savedImport = dataRepo.getSaved();
-        String permission = Giga.DATA_IMPORT_MAINTENANCE + savedImport.getId();
+        String permission = Kilo.DATA_IMPORT_MAINTENANCE + savedImport.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         String activeMedia = "";
@@ -118,16 +118,16 @@ public class DataService {
                 }
 
                 InputStream is = part.getInputStream();
-                String ext = Giga.getExt(original);
-                String name = Giga.getString(9) + "." + ext;
+                String ext = Kilo.getExt(original);
+                String name = Kilo.getString(9) + "." + ext;
                 seaService.send(name, is);
 
                 mediaImport.setMeta(name);
-                mediaImport.setUri(Giga.OCEAN_ENDPOINT + name);
+                mediaImport.setUri(Kilo.OCEAN_ENDPOINT + name);
                 dataRepo.saveMedia(mediaImport);
 
                 MediaImport savedMediaImport = dataRepo.getSavedMedia();
-                String mediaImportPermission = Giga.MEDIA_IMPORT_MAINTENANCE + savedMediaImport.getId();
+                String mediaImportPermission = Kilo.MEDIA_IMPORT_MAINTENANCE + savedMediaImport.getId();
                 userRepo.savePermission(authUser.getId(), mediaImportPermission);
             }
 
@@ -178,7 +178,7 @@ public class DataService {
         }
 
         MediaImport mediaImport = (MediaImport) Qio.get(req, MediaImport.class);
-        String permission = Giga.MEDIA_IMPORT_MAINTENANCE + mediaImport.getId();
+        String permission = Kilo.MEDIA_IMPORT_MAINTENANCE + mediaImport.getId();
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this category.");
@@ -195,7 +195,7 @@ public class DataService {
             return "[redirect]/";
         }
 
-        String permission = Giga.DATA_IMPORT_MAINTENANCE + importId;
+        String permission = Kilo.DATA_IMPORT_MAINTENANCE + importId;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "You don't have access to delete this import.");
@@ -215,7 +215,7 @@ public class DataService {
             return "[redirect]/";
         }
 
-        String permission = Giga.DATA_IMPORT_MAINTENANCE + importId;
+        String permission = Kilo.DATA_IMPORT_MAINTENANCE + importId;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "You don't have access to convert this import.");
@@ -240,7 +240,7 @@ public class DataService {
             Item savedItem = itemRepo.getSaved();
             User authUser = authService.getUser();
 
-            String itemPermission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+            String itemPermission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
             userRepo.savePermission(authUser.getId(), itemPermission);
 
             Category category = categoryRepo.get(mediaImport.getCategoryId());

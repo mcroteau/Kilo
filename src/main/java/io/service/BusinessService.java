@@ -8,7 +8,7 @@ import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -104,7 +103,7 @@ public class BusinessService {
             return "[redirect]/signup";
         }
 
-        String uri = Giga.getUri(business.getName());
+        String uri = Kilo.getUri(business.getName());
         business.setUri(uri);
         Business storedBusiness = businessRepo.get(business.getUri());
         if(storedBusiness != null){
@@ -112,7 +111,7 @@ public class BusinessService {
             return "[redirect]/signup";
         }
 
-        String email = Giga.getSpaces(business.getEmail());
+        String email = Kilo.getSpaces(business.getEmail());
         business.setEmail(email);
         User storedUser = userRepo.get(email);
         if(storedUser != null){
@@ -132,21 +131,21 @@ public class BusinessService {
         }
 
         User user = new User();
-        user.setPhone(Giga.getSpaces(business.getPhone()));
-        user.setUsername(Giga.getSpaces(business.getEmail()));
+        user.setPhone(Kilo.getSpaces(business.getPhone()));
+        user.setUsername(Kilo.getSpaces(business.getEmail()));
         user.setPassword(Chico.dirty(business.getPassword()));
-        user.setDateJoined(Giga.getDate());
+        user.setDateJoined(Kilo.getDate());
         userRepo.save(user);
 
         User savedUser = userRepo.getSaved();
 
-        Role savedRole = roleRepo.find(Giga.CUSTOMER_ROLE);
+        Role savedRole = roleRepo.find(Kilo.CUSTOMER_ROLE);
         userRepo.saveUserRole(savedUser.getId(), savedRole.getId());
 
-        Role businessRole = roleRepo.get(Giga.BUSINESS_ROLE);
+        Role businessRole = roleRepo.get(Kilo.BUSINESS_ROLE);
         userRepo.saveUserRole(savedUser.getId(), businessRole.getId());
 
-        String permission = Giga.USER_MAINTENANCE + savedUser.getId();
+        String permission = Kilo.USER_MAINTENANCE + savedUser.getId();
         userRepo.savePermission(savedUser.getId(), permission);
 
         business.setUserId(savedUser.getId());
@@ -154,7 +153,7 @@ public class BusinessService {
 
         Business savedBusiness = businessRepo.getSaved();
 
-        String businessPermission = Giga.BUSINESS_MAINTENANCE + savedBusiness.getId();
+        String businessPermission = Kilo.BUSINESS_MAINTENANCE + savedBusiness.getId();
         userRepo.savePermission(savedUser.getId(), businessPermission);
 
 
@@ -176,7 +175,7 @@ public class BusinessService {
         request.getSession().setAttribute("username", business.getEmail());
         request.getSession().setAttribute("userId", authUser.getId());
 
-        smsService.send(business.getPhone(), "Giga >_ Welcome! If you have any problems please don't hesitate to send a text to (907)987-8652. My name is Mike, Im here to help!");
+        smsService.send(business.getPhone(), "Kilo >_ Welcome! If you have any problems please don't hesitate to send a text to (907)987-8652. My name is Mike, Im here to help!");
 
 
         return "[redirect]/businesses/signup/complete/" + savedBusiness.getId();
@@ -197,7 +196,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Whoa! Not authorized to view this business.");
@@ -258,7 +257,7 @@ public class BusinessService {
 
         User authUser = authService.getUser();
         Business savedBusiness = businessRepo.getSaved();
-        String permission = Giga.BUSINESS_MAINTENANCE + savedBusiness.getId();
+        String permission = Kilo.BUSINESS_MAINTENANCE + savedBusiness.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         List<Design> designs = designRepo.getList(savedBusiness.getId());
@@ -279,7 +278,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this business.");
@@ -327,7 +326,7 @@ public class BusinessService {
 //            return "[redirect]/";
 //        }
 //
-//        String permission = Giga.BUSINESS_MAINTENANCE + id;
+//        String permission = Kilo.BUSINESS_MAINTENANCE + id;
 //        if(!authService.isAdministrator() &&
 //                !authService.hasPermission(permission)){
 //            data.set("message", "Unauthorized to edit this business.");
@@ -345,7 +344,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this business.");
@@ -361,7 +360,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this business.");
@@ -369,7 +368,7 @@ public class BusinessService {
         }
 
         Business business = (Business) Qio.get(req, Business.class);
-        business.setUri(Giga.getUri(business.getUri()));
+        business.setUri(Kilo.getUri(business.getUri()));
 
         EasyPost.apiKey = easypostKey;
 
@@ -413,7 +412,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             responseData.put("message", "This business doesn't belong to you, you cannot delete this business.");
@@ -442,7 +441,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "not your account buddy...");
@@ -495,7 +494,7 @@ public class BusinessService {
             return "[redirect]/";
         }
 
-        String permission = Giga.BUSINESS_MAINTENANCE + id;
+        String permission = Kilo.BUSINESS_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "not your account buddy...");
@@ -518,7 +517,7 @@ public class BusinessService {
         Business primaryBusiness = businessRepo.get(currentBusiness.getPrimaryId());
         currentBusiness.setPrimary(primaryBusiness);
         List<Business> businesses = businessRepo.getList(authdUser.getId());
-        Giga.sort(businesses);
+        Kilo.sort(businesses);
 
         data.set("authUser", authdUser);
         data.set("business", currentBusiness);
@@ -549,12 +548,12 @@ public class BusinessService {
         design.setName("Base Design");
         design.setDesign(content);
         design.setCss("body{background:#efefef;}");
-        design.setJavascript("console.info('Giga!')");
+        design.setJavascript("console.info('Kilo!')");
         design.setBusinessId(business.getId());
         designRepo.save(design);
 
         Design baseDesign = designRepo.get(business.getId());
-        String designPermission = Giga.DESIGN_MAINTENANCE + baseDesign.getId();
+        String designPermission = Kilo.DESIGN_MAINTENANCE + baseDesign.getId();
         userRepo.savePermission(business.getUserId(), designPermission);
 
         String[] pages = {"Home", "About", "Contact"};
@@ -562,7 +561,7 @@ public class BusinessService {
         //actually, no... sorry. it wont work.
 
         for(String name : pages) {
-            String uri = Giga.getUri(name);
+            String uri = Kilo.getUri(name);
             Page page = new Page();
             page.setName(name);
             page.setUri(uri);
@@ -572,7 +571,7 @@ public class BusinessService {
             pageRepo.save(page);
 
             Page savedPage = pageRepo.getSaved();
-            String pagePermission = Giga.PAGE_MAINTENANCE + savedPage.getId();
+            String pagePermission = Kilo.PAGE_MAINTENANCE + savedPage.getId();
             userRepo.savePermission(business.getUserId(), pagePermission);
         }
 

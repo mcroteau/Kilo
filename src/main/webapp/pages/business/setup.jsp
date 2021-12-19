@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Giga. A Marketplace for Marketplaces</title>
+    <title>Kilo. A Marketplace for Marketplaces</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -22,7 +22,7 @@
             <span class="circle">&nbsp;</span>
             <span class="triangle">&nbsp;</span>
         </div>
-        <span id="identity">Giga</span>
+        <span id="identity">Kilo</span>
     </a>
 
     <div id="header-wrapper">

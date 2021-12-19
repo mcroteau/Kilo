@@ -2,7 +2,7 @@ package io.model;
 
 import java.math.BigDecimal;
 
-public class GroupPricing {
+public class GroupPricingValue {
     Long id;
     Long groupId;
     Long groupItemId;

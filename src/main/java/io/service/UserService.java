@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.BusinessRepo;
 import chico.Chico;
@@ -13,7 +13,6 @@ import qio.annotate.Service;
 import qio.model.web.ResponseData;
 
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class UserService {
     SmsService smsService;
 
     private String getPermission(String id){
-        return Giga.USER_MAINTENANCE + id;
+        return Kilo.USER_MAINTENANCE + id;
     }
 
     public String getEdit(Long id, Long businessId, ResponseData data){
@@ -73,7 +72,7 @@ public class UserService {
             return "[redirect]/";
         }
 
-        user.setPhone(Giga.getSpaces(user.getPhone()));
+        user.setPhone(Kilo.getSpaces(user.getPhone()));
         userRepo.update(user);
 
         data.set("message", "Your account was successfully updated");
@@ -85,18 +84,18 @@ public class UserService {
 
         try {
             String phone = req.getParameter("phone");
-            if(phone != null) phone = Giga.getPhone(phone);
+            if(phone != null) phone = Kilo.getPhone(phone);
             User user = userRepo.getPhone(phone);
             if (user == null) {
                 data.put("message", "Unable to find user with cell phone " + phone + ". Please try again or if the problem persists, contact me Mike and I will reset your password for you. croteau.mike@gmail.com.");
                 return ("[redirect]/users/reset");
             }
 
-            String guid = Giga.getString(4);
+            String guid = Kilo.getString(4);
             user.setPassword(Chico.dirty(guid));
             userRepo.updatePassword(user);
 
-            String message = "Giga >_ Your temporary password : "    + guid;
+            String message = "Kilo >_ Your temporary password : "    + guid;
             smsService.send(phone, message);
 
         }catch(Exception e){
@@ -134,7 +133,7 @@ public class UserService {
             return "[redirect]/snapshot/" + businessId;
         }
 
-        String businessPermission = Giga.BUSINESS_MAINTENANCE + businessId;
+        String businessPermission = Kilo.BUSINESS_MAINTENANCE + businessId;
         if(!authService.hasPermission(businessPermission)){
             data.set("message", "whaoo... ");
             return "[redirect]/snapshot/" + businessId;

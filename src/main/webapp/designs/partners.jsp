@@ -2,7 +2,7 @@
 <%@ taglib prefix="chico" uri="/META-INF/tags/chico.tld" %>
 <html>
 <head>
-    <title>Giga. ${title}</title>
+    <title>Kilo. ${title}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -119,7 +119,7 @@
                     <span class="circle">&nbsp;</span>
                     <span class="triangle">&nbsp;</span>
                 </div>
-                <span id="identity">Giga</span>
+                <span id="identity">Kilo</span>
                 <span class="information" style="margin-top:71px;display: inline-block;">A Marketplace for<br/> Marketplaces</span>
             </a>
         </div>

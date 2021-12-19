@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.ServletException;
@@ -156,10 +156,10 @@ public class ItemService {
         for (Part part : fileParts) {
             String original = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             InputStream is = part.getInputStream();
-            String ext = Giga.getExt(original);
-            String name = Giga.getString(9) + "." + ext;
+            String ext = Kilo.getExt(original);
+            String name = Kilo.getString(9) + "." + ext;
             seaService.send(name, is);
-            item.setImageUri(Giga.OCEAN_ENDPOINT + name);
+            item.setImageUri(Kilo.OCEAN_ENDPOINT + name);
         }
 
         if(item.getImageUri() == null){
@@ -177,7 +177,7 @@ public class ItemService {
             categoryRepo.saveItem(itemCategory);
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + savedItem.getId();
+        String permission = Kilo.ITEM_MAINTENANCE + savedItem.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         return "[redirect]/items/" + savedItem.getBusinessId();
@@ -243,7 +243,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this item.");
@@ -291,7 +291,7 @@ public class ItemService {
 
         Business business = businessRepo.get(businessId);
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this design.");
@@ -309,10 +309,10 @@ public class ItemService {
             for (Part part : fileParts) {
                 String original = Paths.get(part.getSubmittedFileName()).getFileName().toString();
                 InputStream is = part.getInputStream();
-                String ext = Giga.getExt(original);
-                String name = Giga.getString(9) + "." + ext;
+                String ext = Kilo.getExt(original);
+                String name = Kilo.getString(9) + "." + ext;
                 seaService.send(name, is);
-                item.setImageUri(Giga.OCEAN_ENDPOINT + name);
+                item.setImageUri(Kilo.OCEAN_ENDPOINT + name);
             }
         }
 
@@ -351,7 +351,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");
@@ -375,7 +375,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");
@@ -394,7 +394,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");
@@ -413,7 +413,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");
@@ -432,7 +432,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");
@@ -450,7 +450,7 @@ public class ItemService {
             return "[redirect]/";
         }
 
-        String permission = Giga.ITEM_MAINTENANCE + id;
+        String permission = Kilo.ITEM_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this item.");

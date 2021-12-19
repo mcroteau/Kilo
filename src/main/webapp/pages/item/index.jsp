@@ -1,12 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 
 <c:if test="${category != null}">
-    ${siteService.getItemBit(Giga.HEAD, item, category, business, request)}
+    ${siteService.getItemBit(Kilo.HEAD, item, category, business, request)}
 </c:if>
 
 <c:if test="${category == null}">
-    ${siteService.getItemBit(Giga.HEAD, item, null, business, request)}
+    ${siteService.getItemBit(Kilo.HEAD, item, null, business, request)}
 </c:if>
     <div id="barter-item-wrapper">
 
@@ -54,9 +54,9 @@
     </div>
 
 <c:if test="${category != null}">
-    ${siteService.getItemBit(Giga.BOTTOM, item, category, business, request)}
+    ${siteService.getItemBit(Kilo.BOTTOM, item, category, business, request)}
 </c:if>
 
 <c:if test="${category == null}">
-    ${siteService.getItemBit(Giga.BOTTOM, item, null, business, request)}
+    ${siteService.getItemBit(Kilo.BOTTOM, item, null, business, request)}
 </c:if>

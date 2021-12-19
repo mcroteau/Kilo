@@ -1,16 +1,12 @@
 package io.service;
 
 import chico.Chico;
-import io.model.Business;
-import io.model.UserBusiness;
-import io.model.Role;
+import io.Kilo;
 import io.repo.BusinessRepo;
 import io.repo.RoleRepo;
 import jakarta.servlet.http.HttpServletRequest;
-import io.Giga;
 import io.model.User;
 import io.repo.UserRepo;
-import qio.Qio;
 import qio.annotate.Inject;
 import qio.annotate.Service;
 import qio.model.web.ResponseData;
@@ -32,10 +28,10 @@ public class AuthService {
 
 
     public boolean signin(String username, String password){
-        String credential = Giga.getSpaces(username);
+        String credential = Kilo.getSpaces(username);
         User user = userRepo.get(credential);
         if(user == null) {
-            credential = Giga.getPhone(credential);
+            credential = Kilo.getPhone(credential);
             user = userRepo.getPhone(credential);
         }
         if(user == null){
@@ -53,7 +49,7 @@ public class AuthService {
     }
 
     public boolean isAdministrator(){
-        return Chico.hasRole(Giga.SUPER_ROLE);
+        return Chico.hasRole(Kilo.SUPER_ROLE);
     }
 
     public boolean hasPermission(String permission){
@@ -80,7 +76,7 @@ public class AuthService {
             signout();
 
             String credential = req.getParameter("username");
-            if(credential != null)credential = Giga.getSpaces(credential);
+            if(credential != null)credential = Kilo.getSpaces(credential);
 
             String passwordDirty = req.getParameter("password");
             if(!signin(credential, passwordDirty)){

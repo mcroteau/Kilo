@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -108,7 +108,7 @@ public class CategoryService {
         categoryRepo.save(category);
 
         Category savedCategory = categoryRepo.getSaved();
-        String permission = Giga.CATEGORY_MAINTENANCE + savedCategory.getId();
+        String permission = Kilo.CATEGORY_MAINTENANCE + savedCategory.getId();
         userRepo.savePermission(authUser.getId(), permission);
 
         return "[redirect]/categories/" + savedCategory.getBusinessId();
@@ -132,7 +132,7 @@ public class CategoryService {
             return "[redirect]/";
         }
 
-        String permission = Giga.CATEGORY_MAINTENANCE + id;
+        String permission = Kilo.CATEGORY_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this category.");
@@ -167,7 +167,7 @@ public class CategoryService {
             return "[redirect]/";
         }
 
-        String permission = Giga.CATEGORY_MAINTENANCE + id;
+        String permission = Kilo.CATEGORY_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to edit this design.");
@@ -192,7 +192,7 @@ public class CategoryService {
             return "[redirect]/";
         }
 
-        String permission = Giga.CATEGORY_MAINTENANCE + id;
+        String permission = Kilo.CATEGORY_MAINTENANCE + id;
         if(!authService.isAdministrator() &&
                 !authService.hasPermission(permission)){
             data.set("message", "Unauthorized to delete this category.");

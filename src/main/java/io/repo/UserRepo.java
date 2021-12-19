@@ -1,6 +1,6 @@
 package io.repo;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
@@ -160,7 +160,7 @@ public class UserRepo {
 	}
 
 	public boolean checkSaveSuperRole(long userId){
-		Role role = roleRepo.find(Giga.SUPER_ROLE);
+		Role role = roleRepo.find(Kilo.SUPER_ROLE);
 		UserRole existing = getUserRole(userId, role.getId());
 		if(existing == null){
 			saveUserRole(userId, role.getId());
@@ -169,7 +169,7 @@ public class UserRepo {
 	}
 
 //	public boolean checkSaveDefaultUserRole(long userId){
-//		Role role = roleRepo.find(Giga.CUSTOMER_ROLE);
+//		Role role = roleRepo.find(Kilo.CUSTOMER_ROLE);
 //		UserRole existing = getUserRole(userId, role.getId());
 //		if(existing == null){
 //			saveUserRole(userId, role.getId());
@@ -188,7 +188,7 @@ public class UserRepo {
 	}
 
 	public boolean checkSaveDefaultUserPermission(long userId){
-		String permission = Giga.USER_MAINTENANCE + userId;
+		String permission = Kilo.USER_MAINTENANCE + userId;
 		UserPermission existing = getUserPermission(userId, permission);
 		if(existing == null){
 			savePermission(userId, permission);

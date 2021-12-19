@@ -3,7 +3,7 @@ package io.model;
 public class GroupPricingOption {
     Long id;
     Long groupId;
-    String quantity;
+    String description;
 
     public Long getId() {
         return id;
@@ -21,12 +21,11 @@ public class GroupPricingOption {
         this.groupId = groupId;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getDescription() {
+        return description;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
 }

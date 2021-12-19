@@ -1,6 +1,6 @@
 package io.service;
 
-import io.Giga;
+import io.Kilo;
 import io.model.*;
 import io.repo.BusinessRepo;
 import io.repo.CartRepo;
@@ -168,7 +168,7 @@ public class CartService {
         if(cart == null) {
             cart = new Cart();
 
-            cart.setDateCreated(Giga.getDate());
+            cart.setDateCreated(Kilo.getDate());
             cart.setBusinessId(business.getId());
 
             if (user != null) {

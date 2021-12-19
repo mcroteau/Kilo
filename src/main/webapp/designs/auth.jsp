@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="io.Giga" %>
+<%@ page import="io.Kilo" %>
 <html>
 <head>
-    <title>Giga: A Marketplace for Marketplaces</title>
+    <title>Kilo: A Marketplace for Marketplaces</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -64,7 +64,7 @@
             <span class="circle">&nbsp;</span>
             <span class="triangle">&nbsp;</span>
         </div>
-        <span id="identity">Giga</span>
+        <span id="identity">Kilo</span>
         <span class="information" style="margin-top:48px;display: inline-block;">A Marketplace for Marketplaces</span>
     </a>
 
