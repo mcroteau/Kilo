@@ -25,7 +25,7 @@
     }
     #identity{
         font-size: 49px;
-        margin-left:-50px;
+        margin-left:0px;
     }
     #home-href{
         height:100px;
@@ -34,9 +34,9 @@
     }
     .square,.circle,.triangle{display:inline-block;position: absolute; top:-30px;}
     .square{
-        left:135px;
-        height:13px;
-        width:13px;
+        left:155px;
+        height:12px;
+        width:20px;
         background:#3878E3;
         animation: slide-square;
         animation-duration: 1s;
@@ -44,9 +44,9 @@
     }
 
     .circle {
-        left:152px;
-        height:13px;
-        width:13px;
+        left:162px;
+        height:20px;
+        width:20px;
         border-radius: 0px;
         background-color: #7DD9FD;
         border-radius: 50%;
@@ -56,12 +56,12 @@
     }
 
     .triangle {
-        left:166px;
+        left:167px;
         width: 0;
         height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-bottom: 13px solid #FF817A;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid #FF817A;
         animation: slide-triangle;
         animation-duration: 1s;
         animation-iteration-count: 1;

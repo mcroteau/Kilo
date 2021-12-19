@@ -262,7 +262,7 @@ create table if not exists group_categories(
 	business_id bigint NOT NULL REFERENCES businesses(id)
 );
 
-create table if not exists group_items(
+create table if not exists group_models(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	group_id bigint NOT NULL REFERENCES groups(id),
     model_number character varying (243)
@@ -270,30 +270,36 @@ create table if not exists group_items(
 
 create table if not exists group_options(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
-	group_item_id bigint NOT NULL REFERENCES group_items(id),
+	business_id bigint NOT NULL REFERENCES businesses(id),
     title character varying (253)
+);
+
+create table if not exists group_model_options(
+	id bigint PRIMARY KEY AUTO_INCREMENT,
+	group_option_id bigint NOT NULL REFERENCES group_options(id),
+	group_model_id bigint NOT NULL REFERENCES group_models(id)
 );
 
 create table if not exists group_option_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
-	group_item_id bigint NOT NULL REFERENCES group_items(id),
+	group_model_id bigint NOT NULL REFERENCES group_models(id),
 	group_option_id bigint NOT NULL REFERENCES group_options(id),
-	group_pricing_option_id bigint,
-    value character varying (250) default ''
+    value character varying (250) default '',
+    image_uri character varying (250) default ''
 );
 
 create table if not exists group_pricing_options(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	group_id bigint NOT NULL REFERENCES groups(id),
-    String description character varying (250)
+    description character varying (250)
 );
 
 create table if not exists group_pricing_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	group_id bigint NOT NULL REFERENCES groups(id),
-	group_item_id bigint NOT NULL REFERENCES group_items(id),
+	group_model_id bigint NOT NULL REFERENCES group_models(id),
 	group_pricing_option_id bigint,
     price decimal default 0.0,
     quantity decimal default 0.0,
-    affiliatePrice decimal 0.0
+    resellers_price decimal default 0.0
 );

@@ -2,9 +2,8 @@ package io.model;
 
 public class GroupOptionValue {
     Long id;
-    Long groupItemId;
+    Long groupModelId;
     Long groupOptionId;
-    Long groupPricingId;
     String value;
 
     public Long getId() {
@@ -15,12 +14,12 @@ public class GroupOptionValue {
         this.id = id;
     }
 
-    public Long getGroupItemId() {
-        return groupItemId;
+    public Long getGroupModelId() {
+        return groupModelId;
     }
 
-    public void setGroupItemId(Long groupItemId) {
-        this.groupItemId = groupItemId;
+    public void setGroupModelId(Long groupModelId) {
+        this.groupModelId = groupModelId;
     }
 
     public Long getGroupOptionId() {
@@ -29,14 +28,6 @@ public class GroupOptionValue {
 
     public void setGroupOptionId(Long groupOptionId) {
         this.groupOptionId = groupOptionId;
-    }
-
-    public Long getGroupPricingId() {
-        return groupPricingId;
-    }
-
-    public void setGroupPricingId(Long groupPricingId) {
-        this.groupPricingId = groupPricingId;
     }
 
     public String getValue() {

@@ -1,6 +1,7 @@
 package io.repo;
 
 import io.model.Group;
+import io.model.GroupOption;
 import qio.Qio;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
@@ -77,4 +78,24 @@ public class GroupRepo {
         return true;
     }
 
+    public boolean saveOption(GroupOption groupOption) {
+        String sql = "insert into group_options (title, business_id) values ('[+]',[+])";
+        qio.save(sql, new Object[] {
+                groupOption.getTitle(),
+                groupOption.getBusinessId()
+        });
+        return true;
+    }
+
+    public List<GroupOption> getListOptions(Long id){
+        String sql = "select * from group_options where business_id = [+] order by id desc";
+        List<GroupOption> groupOptions = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupOption.class);
+        return groupOptions;
+    }
+
+    public boolean deleteOption(Long id) {
+        String sql = "delete from group_options where id = [+]";
+        qio.delete(sql, new Object[] { id });
+        return true;
+    }
 }

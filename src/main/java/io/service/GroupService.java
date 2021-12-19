@@ -1,7 +1,10 @@
 package io.service;
 
+import io.Kilo;
 import io.model.*;
 import io.repo.*;
+import jakarta.servlet.http.HttpServletRequest;
+import qio.Qio;
 import qio.annotate.Inject;
 import qio.annotate.Service;
 import qio.model.web.ResponseData;
@@ -10,6 +13,9 @@ import java.util.List;
 
 @Service
 public class GroupService {
+
+    @Inject
+    Qio qio;
 
     @Inject
     GroupRepo groupRepo;
@@ -46,6 +52,14 @@ public class GroupService {
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "Whoa! Not authorized to view this business.");
+            return "[redirect]/";
+        }
+
+
         businessService.setData(businessId, data);
 
         List<Category> categories = categoryRepo.getListAll(businessId);
@@ -65,4 +79,62 @@ public class GroupService {
         return "/designs/auth.jsp";
     }
 
+    public String createOptions(Long businessId, ResponseData data) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "Whoa! Not authorized to view this business.");
+            return "[redirect]/";
+        }
+
+        Business business = businessRepo.get(businessId);
+        businessService.setData(businessId, data);
+
+        List<GroupOption> groupOptions = groupRepo.getListOptions(businessId);
+        data.set("groupOptions", groupOptions);
+
+        data.set("page", "/pages/group/create_options.jsp");
+        return "/designs/auth.jsp";
+    }
+
+    public String saveOption(Long businessId, ResponseData data, HttpServletRequest req) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "Whoa! Not authorized to view this business.");
+            return "[redirect]/";
+        }
+
+        Business business = businessRepo.get(businessId);
+
+        GroupOption groupOption = (GroupOption) qio.set(req, GroupOption.class);
+        groupRepo.saveOption(groupOption);
+
+        data.set("message", "Successfully saved group option.");
+
+        return "[redirect]/" + businessId + "/groups/options/create";
+
+    }
+
+    public String deleteOption(Long id, Long businessId, ResponseData data, HttpServletRequest req) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "Whoa! Not authorized to view this business.");
+            return "[redirect]/";
+        }
+
+        Business business = businessRepo.get(businessId);
+        groupRepo.deleteOption(id);
+        return "[redirect]/" + businessId + "/groups/options/create";
+    }
 }

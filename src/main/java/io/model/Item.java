@@ -19,6 +19,8 @@ public class Item {
     BigDecimal weight;
     Boolean active;
 
+    String modelNumber;
+
     List<Category> categories;
 
     public Long getId() {
@@ -127,6 +129,14 @@ public class Item {
 
     public void setActive(Boolean active) {
         active = active;
+    }
+
+    public String getModelNumber() {
+        return modelNumber;
+    }
+
+    public void setModelNumber(String modelNumber) {
+        this.modelNumber = modelNumber;
     }
 
     public List<Category> getCategories() {

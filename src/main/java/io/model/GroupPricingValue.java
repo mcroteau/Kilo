@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class GroupPricingValue {
     Long id;
     Long groupId;
-    Long groupItemId;
+    Long groupModelId;
     Long groupPricingOptionId;
 
     BigDecimal price;
@@ -28,12 +28,12 @@ public class GroupPricingValue {
         this.groupId = groupId;
     }
 
-    public Long getGroupItemId() {
-        return groupItemId;
+    public Long getGroupModelId() {
+        return groupModelId;
     }
 
-    public void setGroupItemId(Long groupItemId) {
-        this.groupItemId = groupItemId;
+    public void setGroupModelId(Long groupModelId) {
+        this.groupModelId = groupModelId;
     }
 
     public Long getGroupPricingOptionId() {

@@ -1,9 +1,12 @@
 package io.model;
 
-public class GroupItem {
+import java.math.BigDecimal;
+
+public class GroupModel {
     Long id;
     Long groupId;
     String modelNumber;
+    BigDecimal weight;
 
     public Long getId() {
         return id;
@@ -27,5 +30,13 @@ public class GroupItem {
 
     public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
     }
 }

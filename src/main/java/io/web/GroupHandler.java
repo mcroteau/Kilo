@@ -19,8 +19,29 @@ public class GroupHandler {
     GroupService groupService;
 
     @Get("/{{businessId}}/groups/create.qzo")
-    public String configure(ResponseData data,
+    public String create(ResponseData data,
                             @Variable Long businessId){
         return groupService.create(businessId, data);
+    }
+
+    @Get("/{{businessId}}/groups/options/create")
+    public String createOptions(ResponseData data,
+                            @Variable Long businessId){
+        return groupService.createOptions(businessId, data);
+    }
+
+    @Post("/{{businessId}}/groups/options/save")
+    public String saveOption(HttpServletRequest req,
+                             ResponseData data,
+                             @Variable Long businessId){
+        return groupService.saveOption(businessId, data, req);
+    }
+
+    @Post("/{{businessId}}/groups/options/delete/{{id}}")
+    public String deleteOption(HttpServletRequest req,
+                             ResponseData data,
+                             @Variable Long businessId,
+                             @Variable Long id){
+        return groupService.deleteOption(id, businessId, data, req);
     }
 }
