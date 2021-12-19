@@ -180,6 +180,9 @@ input[type="submit"].button{
     outline:none !important;
     -webkit-appearance: none;
     -moz-appearance:none;
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(179,179,179,0.43) !important;
+    -moz-box-shadow: 0px 3px 5px 0px rgba(179,179,179,0.43) !important;
+    box-shadow: 0px 3px 5px 0px rgba(179,179,179,0.43) !important;
 }
 
 .gigantic{

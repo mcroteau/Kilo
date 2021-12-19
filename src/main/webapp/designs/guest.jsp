@@ -8,7 +8,10 @@
 
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/benefit/media/icon.gif?v=<%=System.currentTimeMillis()%>">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/benefit/css/default.css?v=<%=System.currentTimeMillis()%>">
+
     <script src="${pageContext.request.contextPath}/benefit/media/confetti.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.js"></script>
+
 </head>
 <body>
 <style>
@@ -111,7 +114,7 @@
 
         <div id="header-wrapper">
             <chico:isAnonymous>
-                <a href="${pageContext.request.contextPath}/signin" id="signin-button" class="button remove">Signin!</a>
+                <a href="${pageContext.request.contextPath}/signin" id="signin-button" class="button green">Signin!</a>
             </chico:isAnonymous>
             <chico:isAuthenticated>
                 <a href="${pageContext.request.contextPath}/signout" id="signin-button" class="button green">Signout!</a>

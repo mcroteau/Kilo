@@ -106,10 +106,10 @@
         <div id="header-wrapper">
 
             <chico:isAnonymous>
-                <a href="${pageContext.request.contextPath}/signin" id="signin-button" class="button remove">Signin!</a>
+                <a href="${pageContext.request.contextPath}/signin" id="signin-button" class="button green">Signin!</a>
             </chico:isAnonymous>
             <chico:isAuthenticated>
-                <a href="${pageContext.request.contextPath}/signout" id="signin-button" class="button remove">Signout!</a>
+                <a href="${pageContext.request.contextPath}/signout" id="signin-button" class="button green">Signout!</a>
             </chico:isAuthenticated>
 
 

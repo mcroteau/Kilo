@@ -27,12 +27,12 @@
 </form>
 
 <h3>Available Group Options</h3>
-${groupOptions}
+
 <style>
-    li{list-style: disc}
+    .group-options li{list-style: disc; margin: 20px 0px 10px 70px;}
 </style>
 <c:if test="${groupOptions.size() > 0}">
-    <ul>
+    <ul class="group-options">
         <c:forEach items="${groupOptions}" var="groupOption">
             <li>${groupOption.title}</li>
         </c:forEach>

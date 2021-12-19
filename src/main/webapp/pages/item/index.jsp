@@ -8,7 +8,7 @@
 <c:if test="${category == null}">
     ${siteService.getItemBit(Kilo.HEAD, item, null, business, request)}
 </c:if>
-    <div id="barter-item-wrapper">
+    <div id="item-wrapper">
 
         <style>
             #item-price{font-size: 102px;font-weight: 900}

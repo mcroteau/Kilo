@@ -17,7 +17,7 @@
             <th>Default</th>
             <th></th>
         </tr>
-        <c:forEach var="design" items="${designs}" varStatus="idx">
+        <c:forEach items="${designs}" var="design" varStatus="idx">
             <tr>
                 <td>${design.name}</td>
                 <td>
