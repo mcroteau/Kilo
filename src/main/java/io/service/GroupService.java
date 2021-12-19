@@ -145,7 +145,8 @@ public class GroupService {
             return "[redirect]/";
         }
 
-
+        List<GroupOption> groupOptions = groupRepo.getListOptions(businessId);
+        data.set("groupOptions", groupOptions);
 
         Group group = groupRepo.get(id);
         data.set("group", group);

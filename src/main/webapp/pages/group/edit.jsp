@@ -8,7 +8,7 @@
     #outer-wrapper{width:980px;}
     #content-wrapper{width: 100%;}
     #menu-wrapper{display:none;}
-    .model-wrapper{padding:20px 0px; border-top:solid 1px #e4e8e9; border-bottom: solid 1px #e4e8e9;}
+    .model-wrapper{padding:20px 0px; margin:20px 0px; border-top:solid 1px #e4e8e9; border-bottom: solid 1px #e4e8e9;}
     input[type="file"]{width:182px;}
 </style>
 
@@ -70,92 +70,97 @@
 <c:if test="${optionsCount != null &&
                         pricesCount != null}">
 
-    <div class="model-wrapper">
 
-        <div class="left-float" style="width:45%;">
-            <h3>Model Number #</h3>
-            <input type="text" placeholder="Model No."/>
-        </div>
+    <form action="${pageContext.request.contextPath}/${business.id}/models/save" method="post">
 
-        <div class="right-float"style="width:45%;">
-            <h3>Weight</h3>
-            <input type="text" placeholder="Weight" style="width:45%;"/>
-        </div>
+        <input type="hidden" name="optionsCount" value="${optionsCount}"/>
 
-        <br class="clear"/>
+        <div class="model-wrapper">
 
-        <div class="option-wrapper">
-            <h3>Model Options</h3>
-            <table class="grid">
-                <tr>
-                    <th>Label</th>
-                    <th>Value</th>
-                </tr>
-
-                <c:forEach var="idx" begin="1" end="${optionsCount}" step="1">
-                <tr>
-                    <td>
-                        <select name="modelOption${idx}">
-                            <option>Option ...</option>
-                            <c:forEach items="${groupOptions}" var="groupOption">
-                                <option id="${groupOption.id}">${groupOption.title}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" placeholder="Value" name="value${idx}"/><br/>
-                        <input type="file" name="media${idx}">
-                    </td>
-                </tr>
-                </c:forEach>
-            </table>
-        </div>
-
-
-        <div class="pricing-wrapper">
-            <h3>Pricing Details</h3>
-            <table class="grid">
-                <tr>
-                    <th>Pricing Header</th>
-                    <td colspan="${pricesCount}"><input type="text" placeholder="Price/Carton"></td>
-                </tr>
-                <tr>
-                    <th>Label</th>
-                    <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
-                        <td><input type="text" placeholder="eg. 1"/></td>
-                    </c:forEach>
-                </tr>
-                <tr>
-                    <th>$ Price</th>
-                    <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
-                        <td><input type="text" placeholder="$ Price"/></td>
-                    </c:forEach>
-                </tr>
-                <tr>
-                    <th>Resellers Price</th>
-                    <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
-                        <td><input type="text" placeholder="Resellers $ Price"/></td>
-                    </c:forEach>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
-                        <td><input type="text" placeholder="Quantity"/></td>
-                    </c:forEach>
-                </tr>
-            </table>
-
-            <div class="button-wrapper">
-                <input type="submit" class="button blue" value="Save">
-                <input type="submit" class="button green" value="Add Model Number">
-                <p class="align-right tiny">Add model saves and adds it to this item group</p>
+            <div class="left-float" style="width:45%;">
+                <h3>Model Number #</h3>
+                <input type="text" placeholder="Model No."/>
             </div>
+
+            <div class="right-float"style="width:45%;">
+                <h3>Weight</h3>
+                <input type="text" placeholder="Weight" style="width:45%;"/>
+            </div>
+
+            <br class="clear"/>
+
+            <div class="option-wrapper">
+                <h3>Model Options</h3>
+                <table class="grid">
+                    <tr>
+                        <th>Label</th>
+                        <th>Value</th>
+                    </tr>
+
+                    <c:forEach var="idx" begin="1" end="${optionsCount}" step="1">
+                    <tr>
+                        <td>
+                            <select name="modelOption${idx}">
+                                <option>Option ...</option>
+                                <c:forEach items="${groupOptions}" var="groupOption">
+                                    <option id="${groupOption.id}">${groupOption.title}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Value" name="value${idx}"/><br/>
+                            <input type="file" name="media${idx}">
+                        </td>
+                    </tr>
+                    </c:forEach>
+                </table>
+            </div>
+
+
+            <div class="pricing-wrapper">
+                <h3>Pricing Details</h3>
+                <table class="grid">
+                    <tr>
+                        <th>Pricing Header</th>
+                        <td colspan="${pricesCount}"><input type="text" placeholder="Price/Carton"></td>
+                    </tr>
+                    <tr>
+                        <th>Label</th>
+                        <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
+                            <td><input type="text" placeholder="eg. 1"/></td>
+                        </c:forEach>
+                    </tr>
+                    <tr>
+                        <th>$ Price</th>
+                        <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
+                            <td><input type="text" placeholder="$ Price"/></td>
+                        </c:forEach>
+                    </tr>
+                    <tr>
+                        <th>Resellers Price</th>
+                        <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
+                            <td><input type="text" placeholder="Resellers $ Price"/></td>
+                        </c:forEach>
+                    </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <c:forEach var="idx" begin="1" end="${pricesCount}" step="1">
+                            <td><input type="text" placeholder="Quantity"/></td>
+                        </c:forEach>
+                    </tr>
+                </table>
+
+                <div class="button-wrapper">
+                    <input type="submit" class="button blue" value="Save">
+                    <input type="submit" class="button green" value="Add Model Number">
+                    <p class="align-right tiny">Add model saves and adds it to this item group</p>
+                </div>
+            </div>
+
+            <br class="clear"/>
+
         </div>
-
-        <br class="clear"/>
-
-    </div>
-
+    </form>
 </c:if>
 
 
