@@ -1,6 +1,7 @@
 package io.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class GroupModel {
     Long id;
@@ -11,6 +12,10 @@ public class GroupModel {
     BigDecimal weight;
     BigDecimal quantity;
     String perBoxQuantity;
+
+    List<GroupOption> groupOptions;
+    List<GroupOptionValue> groupValues;
+    List<PricingValue> pricingValues;
 
     public Long getId() {
         return id;
@@ -74,5 +79,29 @@ public class GroupModel {
 
     public void setPerBoxQuantity(String perBoxQuantity) {
         this.perBoxQuantity = perBoxQuantity;
+    }
+
+    public List<GroupOption> getGroupOptions() {
+        return groupOptions;
+    }
+
+    public void setGroupOptions(List<GroupOption> groupOptions) {
+        this.groupOptions = groupOptions;
+    }
+
+    public List<GroupOptionValue> getGroupValues() {
+        return groupValues;
+    }
+
+    public void setGroupValues(List<GroupOptionValue> groupValues) {
+        this.groupValues = groupValues;
+    }
+
+    public List<PricingValue> getPricingValues() {
+        return pricingValues;
+    }
+
+    public void setPricingValues(List<PricingValue> pricingValues) {
+        this.pricingValues = pricingValues;
     }
 }

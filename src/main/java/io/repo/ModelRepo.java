@@ -40,7 +40,7 @@ public class ModelRepo {
     }
 
     public List<GroupModel> getList(long id){
-        String sql = "select * from group_models where business_id = [+] order by id desc";
+        String sql = "select * from group_models where group_id = [+] order by id desc";
         List<GroupModel> groupModels = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupModel.class);
         return groupModels;
     }

@@ -53,7 +53,7 @@ public class GroupRepo {
     }
 
     public List<ItemGroup> getList(long id){
-        String sql = "select * from item_groups where business_id = [+] order by id desc";
+        String sql = "select * from item_groups where ingest_id = [+] order by id desc";
         List<ItemGroup> itemItemGroups = (ArrayList) qio.getList(sql, new Object[]{ id }, ItemGroup.class);
         return itemItemGroups;
     }

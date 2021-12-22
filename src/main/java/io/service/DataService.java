@@ -358,7 +358,7 @@ public class DataService {
         }
     }
 
-    public String viewIngestImport(Long businessId, ResponseData data) {
+    public String viewItemGroupImport(Long businessId, ResponseData data) {
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
@@ -373,7 +373,7 @@ public class DataService {
         return "/designs/auth.jsp";
     }
 
-    public String viewIngests(Long businessId, Long importId, ResponseData data) {
+    public String viewItemGroups(Long businessId, ResponseData data) {
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
@@ -386,31 +386,47 @@ public class DataService {
         }
 
         businessService.setData(businessId, data);
-//        List<SpreadsheetIngest> spreadsheetIngests = dataRepo.getListSpreadSheets();
-//        for(SpreadsheetIngest spreadsheetIngest: spreadsheetIngests){
-//            ItemGroup group = groupRepo.get(spreadsheetIngest.getGroupId());
-//            List<GroupModel> groupModels = groupRepo.getListModels(group.getId());
-//            for(GroupModel groupModel : groupModels){
-//                List<GroupOption> groupOptions = groupRepo.getListGroupOptions(groupModel.getId());
-//                for(GroupOption groupOption : groupOptions){
-//                    GroupOptionValue groupModelOptionValue = groupRepo.getOptionValue(groupOption.getId());
-//                    groupOption.setOptionValue(groupModelOptionValue);
-//                }
-//                groupModel.setGroupOptions(groupOptions);
-//            }
-//            group.setGroupModels(groupModels);
-//
-//            List<PricingOption> groupPricingOptions = groupRepo.getListPricingOptions(group.getId());
-//            for(PricingOption groupPricingOption : groupPricingOptions){
-//                PricingValue groupPricingValue = groupRepo.getPricingValue(groupPricingOption.getId());
-//                groupPricingOption.setGroupPricingValue(groupPricingValue);
-//            }
-//            group.setGroupPricingOptions(groupPricingOptions);
-//        }
-//
-//        data.set("spreadsheetIngests", spreadsheetIngests);
+        List<Ingest> ingests = ingestRepo.getList(businessId);
+        for(Ingest ingest: ingests){
+            List<ItemGroup> itemGroups = groupRepo.getList(ingest.getId());
+            for(ItemGroup itemGroup: itemGroups){
+                List<GroupModel> groupModels = modelRepo.getList(itemGroup.getId());
+                for(GroupModel groupModel : groupModels){
+                    List<GroupOption> groupOptions = optionRepo.getListOptions(groupModel.getId());
+                    List<GroupOptionValue> groupValues = optionRepo.getListValues(groupModel.getId());
+                    List<PricingValue> pricingValues = priceRepo.getListValues(groupModel.getId());
+                    groupModel.setGroupOptions(groupOptions);
+                    groupModel.setGroupValues(groupValues);
+                    groupModel.setPricingValues(pricingValues);
+                }
+                itemGroup.setGroupModels(groupModels);
 
-        data.set("page", "/pages/data/item_group_imports.jsp");
+                List<PricingOption> pricingOptions = priceRepo.getListOptions(itemGroup.getId());
+                itemGroup.setPricingOptions(pricingOptions);
+            }
+
+        }
+
+        data.set("ingests", ingests);
+
+        data.set("page", "/pages/data/item_group_import_list.jsp");
+        return "/designs/auth.jsp";
+    }
+
+
+    public String viewIngest(Long businessId, ResponseData data){
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
+        data.set("page", "/pages/data/item_group_import.jsp");
         return "/designs/auth.jsp";
     }
 

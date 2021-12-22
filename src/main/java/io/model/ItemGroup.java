@@ -1,5 +1,7 @@
 package io.model;
 
+import java.util.List;
+
 public class ItemGroup {
 
     Long id;
@@ -10,6 +12,9 @@ public class ItemGroup {
     String imageUri;
     String pricingHeader;
     String qHeader;
+
+    List<GroupModel> groupModels;
+    List<PricingOption> pricingOptions;
 
     public Long getId() {
         return id;
@@ -73,5 +78,21 @@ public class ItemGroup {
 
     public void setqHeader(String qHeader) {
         this.qHeader = qHeader;
+    }
+
+    public List<GroupModel> getGroupModels() {
+        return groupModels;
+    }
+
+    public void setGroupModels(List<GroupModel> groupModels) {
+        this.groupModels = groupModels;
+    }
+
+    public List<PricingOption> getPricingOptions() {
+        return pricingOptions;
+    }
+
+    public void setPricingOptions(List<PricingOption> pricingOptions) {
+        this.pricingOptions = pricingOptions;
     }
 }
