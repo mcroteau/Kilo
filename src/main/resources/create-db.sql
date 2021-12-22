@@ -250,38 +250,31 @@ create table if not exists business_requests (
 
 create table if not exists groups(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	business_id bigint NOT NULL REFERENCES businesses(id),
 	design_id bigint NOT NULL REFERENCES designs(id),
 	name character varying (253),
     image_uri character varying (253)
 );
 
-create table if not exists group_categories(
-	group_id bigint NOT NULL REFERENCES groups(id),
-	category_id bigint NOT NULL REFERENCES categories(id),
-	business_id bigint NOT NULL REFERENCES businesses(id)
-);
-
 create table if not exists group_models(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
     model_number character varying (243)
 );
 
 create table if not exists group_options(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
+	group_id bigint NOT NULL REFERENCES groups(id),
 	business_id bigint NOT NULL REFERENCES businesses(id),
     title character varying (253)
 );
 
-create table if not exists group_model_options(
-	id bigint PRIMARY KEY AUTO_INCREMENT,
-	group_option_id bigint NOT NULL REFERENCES group_options(id),
-	group_model_id bigint NOT NULL REFERENCES group_models(id)
-);
-
 create table if not exists group_option_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_model_id bigint NOT NULL REFERENCES group_models(id),
 	group_option_id bigint NOT NULL REFERENCES group_options(id),
     value character varying (250) default '',
@@ -290,12 +283,14 @@ create table if not exists group_option_values(
 
 create table if not exists group_pricing_options(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
     description character varying (250)
 );
 
 create table if not exists group_pricing_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
 	group_model_id bigint NOT NULL REFERENCES group_models(id),
 	group_pricing_option_id bigint,

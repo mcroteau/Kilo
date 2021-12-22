@@ -98,7 +98,7 @@ public class GroupIngest {
                             groupOption.setIngestId(savedIngest.getId());
                             groupOption.setBusinessId(businessId);
                             groupOption.setGroupId(savedGroup.getId());
-                            groupRepo.saveOption(groupOption);
+                            optionRepo.saveOption(groupOption);
                         }
                         if(z >= priceIdx){
                             String description = values[z];

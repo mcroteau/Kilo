@@ -2,6 +2,7 @@ package io.repo;
 
 import io.model.PricingOption;
 import io.model.GroupOption;
+import io.model.PricingValue;
 import qio.Qio;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
@@ -33,30 +34,36 @@ public class PriceRepo {
         return pricingOption;
     }
 
-    public PricingOption get(String modelNumber){
-        String sql = "select * from group_models where model_number = '[+]'";
-        PricingOption pricingOption = (PricingOption) qio.get(sql, new Object[] { modelNumber }, PricingOption.class);
-        return pricingOption;
-    }
-
-    public List<PricingOption> getList(long id){
-        String sql = "select * from group_models where business_id = [+] order by id desc";
+    public List<PricingOption> getListOptions(long id){
+        String sql = "select * from pricing_options where group_id = [+] order by id asc";
         List<PricingOption> pricingOptions = (ArrayList) qio.getList(sql, new Object[]{ id }, PricingOption.class);
         return pricingOptions;
     }
 
-    public Boolean save(PricingOption pricingOption){
-        String sql = "insert into group_models (model_number, group_id, weight) values ('[+]',[+],[+])";
-        qio.save(sql, new Object[] {
+    public List<PricingValue> getListValues(long id){
+        String sql = "select * from pricing_values where model_id = [+] order by id asc";
+        List<PricingValue> pricingValues = (ArrayList) qio.getList(sql, new Object[]{ id }, PricingValue.class);
+        return pricingValues;
+    }
 
+    public Boolean saveOption(PricingOption pricingOption){
+        String sql = "insert into pricing_options (description, ingest_id, business_id, group_id) values ('[+]',[+],[+],[+])";
+        qio.save(sql, new Object[] {
+                pricingOption.getDescription(),
+                pricingOption.getIngestId(),
+                pricingOption.getBusinessId(),
+                pricingOption.getGroupId()
         });
         return true;
     }
 
-    public boolean update(PricingOption storedPricingOption) {
-        String sql = "update group_models set quantity = [+] where id = [+]";
-        qio.update(sql, new Object[] {
-
+    public Boolean saveValue(PricingValue pricingValue){
+        String sql = "insert into pricing_values (price, ingest_id, model_id, business_id) values ([+],[+],[+],[+])";
+        qio.save(sql, new Object[] {
+                pricingValue.getPrice(),
+                pricingValue.getIngestId(),
+                pricingValue.getModelId(),
+                pricingValue.getBusinessId()
         });
         return true;
     }

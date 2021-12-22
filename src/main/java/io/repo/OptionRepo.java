@@ -1,8 +1,7 @@
 package io.repo;
 
+import io.model.*;
 import io.model.GroupOption;
-import io.model.GroupOption;
-import io.model.GroupCategory;
 import qio.Qio;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
@@ -58,7 +57,7 @@ public class OptionRepo {
         return itemGroupOptions;
     }
 
-    public Boolean save(GroupOption groupOption){
+    public Boolean saveOption(GroupOption groupOption){
         String sql = "insert into group_options (group_id, ingest_id, business_id, title) values ([+],[+],[+],'[+]')";
         qio.save(sql, new Object[] {
                 groupOption.getGroupId(),
@@ -69,9 +68,24 @@ public class OptionRepo {
         return true;
     }
 
-    public Boolean update(GroupOption item){
-        String sql = "update group_options set z = [+] where id = [+]";
-        qio.update(sql, new Object[] {});
+    public Boolean saveValue(GroupOptionValue groupValue){
+        String sql = "insert into group_option_values (ingest_id, model_id, business_id, value) values ([+],[+],[+],'[+]')";
+        qio.save(sql, new Object[] {
+                groupValue.getIngestId(),
+                groupValue.getModelId(),
+                groupValue.getBusinessId(),
+                groupValue.getValue()
+        });
+        return true;
+    }
+
+    public boolean updateValue(GroupModel storedModel) {
+        String sql = "update group_option_values set quantity = [+] where id = [+]";
+        qio.update(sql, new Object[] {
+                storedModel.getWeight(),
+                storedModel.getQuantity(),
+                storedModel.getId()
+        });
         return true;
     }
 
