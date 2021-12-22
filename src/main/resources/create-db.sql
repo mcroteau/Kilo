@@ -248,20 +248,33 @@ create table if not exists business_requests (
     pending boolean default true
 );
 
-create table if not exists groups(
+
+create table if not exists ingests(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
+	business_id bigint NOT NULL REFERENCES businesses(id),
+	date_ingest bigint
+);
+
+create table if not exists item_groups(
+	id bigint PRIMARY KEY AUTO_INCREMENT,
+	name character varying (253),
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	business_id bigint NOT NULL REFERENCES businesses(id),
 	design_id bigint NOT NULL REFERENCES designs(id),
-	name character varying (253),
-    image_uri character varying (253)
+    image_uri character varying (253),
+    pricing_header character varying (253),
+    q_header character varying (253),
+	ingest_id bigint NOT NULL REFERENCES ingests(id)
 );
 
 create table if not exists group_models(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
-    model_number character varying (243)
+	business_id bigint NOT NULL REFERENCES businesses(id),
+    model_number character varying (243),
+    weight bigint,
+    quantity bigint
 );
 
 create table if not exists group_options(
@@ -275,16 +288,17 @@ create table if not exists group_options(
 create table if not exists group_option_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
-	group_model_id bigint NOT NULL REFERENCES group_models(id),
-	group_option_id bigint NOT NULL REFERENCES group_options(id),
+	business_id bigint NOT NULL REFERENCES businesses(id),
+	model_id bigint NOT NULL REFERENCES group_models(id),
     value character varying (250) default '',
     image_uri character varying (250) default ''
 );
 
-create table if not exists group_pricing_options(
+create table if not exists pricing_options(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
+	business_id bigint NOT NULL REFERENCES businesses(id),
     description character varying (250)
 );
 
@@ -292,9 +306,7 @@ create table if not exists group_pricing_values(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	group_id bigint NOT NULL REFERENCES groups(id),
-	group_model_id bigint NOT NULL REFERENCES group_models(id),
-	group_pricing_option_id bigint,
-    price decimal default 0.0,
-    quantity decimal default 0.0,
-    resellers_price decimal default 0.0
+	model_id bigint NOT NULL REFERENCES group_models(id),
+	business_id bigint NOT NULL REFERENCES businesses(id),
+    price decimal default 0.0
 );

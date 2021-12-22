@@ -4,6 +4,7 @@ public class ItemGroup {
 
     Long id;
     String name;
+    Long ingestId;
     Long businessId;
     Long designId;
     String imageUri;
@@ -16,6 +17,22 @@ public class ItemGroup {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getIngestId() {
+        return ingestId;
+    }
+
+    public void setIngestId(Long ingestId) {
+        this.ingestId = ingestId;
     }
 
     public Long getBusinessId() {
@@ -32,14 +49,6 @@ public class ItemGroup {
 
     public void setDesignId(Long designId) {
         this.designId = designId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getImageUri() {

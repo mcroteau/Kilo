@@ -1,4 +1,4 @@
-package io.engine;
+package io.ingest;
 
 import io.Kilo;
 import io.model.*;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class GroupIngest {
+public class ItemGroupIngest {
 
     final int MODEL_NUMBER = 0;
     final int QUANTITY = 1;
@@ -27,6 +27,8 @@ public class GroupIngest {
     final int SECOND_ROW = 2;
     final int THIRD_ROW = 2;
 
+    IngestStats ingestStats;
+
     Long designId;
     Long businessId;
     ModelRepo modelRepo;
@@ -37,22 +39,23 @@ public class GroupIngest {
     HttpServletRequest req;
     List<GroupModel> groupModels;
 
-    public GroupIngest(Builder builder){
+    public ItemGroupIngest(Builder builder){
         this.req = builder.req;
         this.designId = builder.designId;
         this.businessId = builder.businessId;
         this.modelRepo = builder.modelRepo;
         this.groupRepo = builder.groupRepo;
         this.groupModels = new ArrayList<>();
+        this.ingestStats = new IngestStats();
     }
 
-    public void ingest() throws IOException, ServletException {
+    public ItemGroupIngest ingest() throws IOException, ServletException {
         List<Part> parts = req.getParts()
                 .stream()
                 .filter(part -> "media".equals(part.getName()) && part.getSize() > 0)
                 .collect(Collectors.toList());
 
-        Integer processes = 0;
+        Integer processed = 0;
         Integer unprocessed = 0;
 
         for(int q = 0; q < parts.size(); q++){
@@ -75,7 +78,6 @@ public class GroupIngest {
             Integer priceIdx = null;
             Integer weightIdx = null;
             Integer quantityIdx = null;
-            Integer perIdx = null;
 
             while(scanner.hasNext()) {
 
@@ -87,11 +89,12 @@ public class GroupIngest {
                         savedGroup = createGroup(designId, businessId, values);
                         if (savedGroup == null) {
                             unprocessed++;
+                            ingestStats.setUnprocessed(unprocessed);
                             continue;
                         }
                     }
 
-                    if (idx == this.SECOND_ROW) setIndexes(values, priceIdx, weightIdx, quantityIdx, perIdx);
+                    if (idx == this.SECOND_ROW) setIndexes(values, priceIdx, weightIdx, quantityIdx);
                     if (idx == this.THIRD_ROW) {
                         if (z >= quantityIdx && z < priceIdx) {
                             GroupOption groupOption = new GroupOption();
@@ -143,8 +146,9 @@ public class GroupIngest {
                         if (z >= quantityIdx && z < priceIdx) {
                             String value = values[z];
                             if(value.equals("")){
-                                //Todo: delete model
+                                modelRepo.delete(savedModel.getId());
                                 unprocessed++;
+                                ingestStats.setUnprocessed(unprocessed);
                                 continue;
                             }
                             GroupOptionValue groupValue = new GroupOptionValue();
@@ -158,7 +162,10 @@ public class GroupIngest {
                             String price = values[z];
                             if(price.equals("")){
                                 //Todo: delete model
-                                unprocessed++
+                                optionRepo.deleteValues(savedModel.getId());
+                                modelRepo.delete(savedModel.getId());
+                                unprocessed++;
+                                ingestStats.setUnprocessed(unprocessed);
                                 continue;
                             }
                             try{
@@ -171,18 +178,34 @@ public class GroupIngest {
                                 priceRepo.saveValue(pricingValue);
                             }catch(Exception ex){
                                 //Todo: delete
+                                //delete model options
+                                //model
+                                optionRepo.deleteValues(savedModel.getId());
+                                modelRepo.delete(savedModel.getId());
+                                unprocessed++;
+                                ingestStats.setUnprocessed(unprocessed);
+
                             }
 
                         }
 
                     }
 
-                    idx++
-
+                    idx++;
+                    processed++;
+                    ingestStats.setCount(idx);
+                    ingestStats.setProcessed(processed);
+                    ingestStats.setUnprocessed(unprocessed);
                 }
             }
         }
 
+        return this;
+    }
+
+
+    public IngestStats getStats(){
+        return this.ingestStats;
     }
 
     protected ItemGroup createGroup(Long designId, Long businessId, String[] values){
@@ -191,7 +214,7 @@ public class GroupIngest {
             return null;
         }
 
-        String priceHeader = values[GroupIngest.PRICE_HEADER];
+        String priceHeader = values[this.PRICE_HEADER];
         if(priceHeader.equals("")){
             return null;
         }
@@ -209,7 +232,7 @@ public class GroupIngest {
     }
 
 
-    protected void setIndexes(String[] values, Integer priceIdx, Integer weightIdx, Integer quantityIdx, Integer perIdx){
+    protected void setIndexes(String[] values, Integer priceIdx, Integer weightIdx, Integer quantityIdx){
         for(int idx = 0; idx < values.length; idx++){
             if(priceIdx != null &&
                     values[idx].equals("::prices::")){
@@ -223,16 +246,13 @@ public class GroupIngest {
                     values[idx].equals("::quantity::")){
                 quantityIdx = idx;
             }
-            if(perIdx != null &&
-                    values[idx].equals("::per::")){
-                perIdx = idx;
-            }
         }
     }
 
     public static class Builder{
         Long designId;
         Long businessId;
+        IngestRepo ingestRepo;
         ModelRepo modelRepo;
         GroupRepo groupRepo;
         PriceRepo priceRepo;
@@ -271,8 +291,8 @@ public class GroupIngest {
             this.req = req;
             return this;
         }
-        public GroupIngest build(){
-            return new GroupIngest(this);
+        public ItemGroupIngest build(){
+            return new ItemGroupIngest(this);
         }
     }
 }

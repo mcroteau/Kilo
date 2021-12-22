@@ -17,49 +17,49 @@ public class GroupRepo {
     Qio qio;
 
     public ItemGroup getSaved() {
-        String idSql = "select max(id) from groups";
+        String idSql = "select max(id) from item_groups";
         long id = qio.getLong(idSql, new Object[]{});
         return get(id);
     }
 
     public long getCount() {
-        String sql = "select count(*) from groups";
+        String sql = "select count(*) from item_groups";
         Long count = (Long) qio.getLong(sql, new Object[] { });
         return count;
     }
 
     public ItemGroup get(long id){
-        String sql = "select * from groups where id = [+]";
+        String sql = "select * from item_groups where id = [+]";
         ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { id }, ItemGroup.class);
         return itemGroup;
     }
 
     public ItemGroup get(String name){
-        String sql = "select * from groups where name = '[+]'";
+        String sql = "select * from item_groups where name = '[+]'";
         ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { name }, ItemGroup.class);
         return itemGroup;
     }
 
     public ItemGroup get(long id, long businessId){
-        String sql = "select * from groups where id = [+] and business_id = [+]";
+        String sql = "select * from item_groups where id = [+] and business_id = [+]";
         ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { id, businessId }, ItemGroup.class);
         return itemGroup;
     }
 
     public List<ItemGroup> getList(){
-        String sql = "select * from groups order by id desc";
+        String sql = "select * from item_groups order by id desc";
         List<ItemGroup> itemItemGroups = (ArrayList) qio.getList(sql, new Object[]{}, ItemGroup.class);
         return itemItemGroups;
     }
 
     public List<ItemGroup> getList(long id){
-        String sql = "select * from groups where business_id = [+] and active = true order by id desc";
+        String sql = "select * from item_groups where business_id = [+] order by id desc";
         List<ItemGroup> itemItemGroups = (ArrayList) qio.getList(sql, new Object[]{ id }, ItemGroup.class);
         return itemItemGroups;
     }
 
     public Boolean save(ItemGroup itemGroup){
-        String sql = "insert into groups (name, q_header, pricing_header, image_uri, business_id, design_id) values ('[+]','[+]','[+]','[+]',[+],[+])";
+        String sql = "insert into item_groups (name, q_header, pricing_header, image_uri, business_id, design_id) values ('[+]','[+]','[+]','[+]',[+],[+])";
         qio.save(sql, new Object[] {
                 itemGroup.getName(),
                 itemGroup.getImageUri(),
@@ -67,13 +67,12 @@ public class GroupRepo {
                 itemGroup.getPricingHeader(),
                 itemGroup.getBusinessId(),
                 itemGroup.getDesignId()
-
         });
         return true;
     }
 
     public Boolean update(ItemGroup item){
-        String sql = "update groups set name = '[+]', design_id = [+] where id = [+]";
+        String sql = "update item_groups set name = '[+]', design_id = [+] where id = [+]";
         qio.update(sql, new Object[] {
                 item.getName(),
                 item.getDesignId(),
@@ -83,7 +82,7 @@ public class GroupRepo {
     }
 
     public boolean delete(long id){
-        String sql = "delete from groups where id = [+]";
+        String sql = "delete from item_groups where id = [+]";
         qio.delete(sql, new Object[] { id });
         return true;
     }
@@ -100,13 +99,4 @@ public class GroupRepo {
         return true;
     }
 
-    public boolean saveCategory(GroupCategory groupCategory) {
-        String sql = "insert into group_categories (group_id, category_id, business_id) values ([+],[+],[+])";
-        qio.save(sql, new Object[] {
-                groupCategory.getGroupId(),
-                groupCategory.getCategoryId(),
-                groupCategory.getBusinessId()
-        });
-        return true;
-    }
 }

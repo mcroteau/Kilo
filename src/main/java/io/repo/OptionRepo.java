@@ -51,10 +51,16 @@ public class OptionRepo {
         return itemGroupOptions;
     }
 
-    public List<GroupOption> getList(long id){
-        String sql = "select * from group_options where business_id = [+] and active = true order by id desc";
+    public List<GroupOption> getListOptions(long id){
+        String sql = "select * from group_options where model_id = [+] order by id asc";
         List<GroupOption> itemGroupOptions = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupOption.class);
         return itemGroupOptions;
+    }
+
+    public List<GroupOptionValue> getListValues(long id){
+        String sql = "select * from group_option_values where model_id = [+] order by id asc";
+        List<GroupOptionValue> groupOptionValues = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupOptionValue.class);
+        return groupOptionValues;
     }
 
     public Boolean saveOption(GroupOption groupOption){
@@ -95,5 +101,9 @@ public class OptionRepo {
         return true;
     }
 
-
+    public boolean deleteValues(Long id) {
+        String sql = "delete from group_option_values where model_id = [+]";
+        qio.delete(sql, new Object[] { id });
+        return true;
+    }
 }

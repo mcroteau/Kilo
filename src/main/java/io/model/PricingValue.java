@@ -8,7 +8,6 @@ public class PricingValue {
     Long groupId;
     Long modelId;
     Long businessId;
-
     BigDecimal price;
 
     public Long getId() {

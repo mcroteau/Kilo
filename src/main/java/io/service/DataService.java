@@ -13,8 +13,9 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.gson.Gson;
 import io.Kilo;
-import io.engine.GroupIngest;
+import io.ingest.ItemGroupIngest;
 import io.model.*;
 import io.repo.*;
 import jakarta.servlet.ServletException;
@@ -38,8 +39,12 @@ import java.util.stream.Collectors;
 @Service
 public class DataService {
 
+    Gson gson = new Gson();
+
     @Inject
     Qio qio;
+
+    Map<String, ItemGroupIngest> ingests;
 
     final String APPLICATION_NAME = "Kilo Development";
     final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -78,6 +83,9 @@ public class DataService {
 
     @Inject
     PriceRepo priceRepo;
+
+    @Inject
+    BusinessRepo businessRepo;
 
     @Inject
     AuthService authService;
@@ -420,10 +428,17 @@ public class DataService {
             return "[redirect]/";
         }
 
+        Business business = businessRepo.get(businessId);
+        String key = business.getUri();
+        if(!ingests.containsKey(key)){
+            ingests.remove(key);
+        }
+
+        ItemGroupIngest ingest = null;
         try{
 
             Design design = designRepo.getBase(businessId);
-            new GroupIngest.Builder()
+            ingest = new ItemGroupIngest.Builder()
                     .withDesignId(design.getId())
                     .withBusinessId(businessId)
                     .withModelRepo(modelRepo)
@@ -435,13 +450,33 @@ public class DataService {
                     .build()
                     .ingest();
 
+            ingests.put(key, ingest);
+
         }catch (IOException | ServletException ex){
             ex.printStackTrace();
-            data.set("message", "Oh no! Unable to locate authentication credentials. Please contact someone!");
+            data.set("message", "Oh no! Will you try again, it may be something small with your data.");
             return "[redirect]/";
         }
-        return "";
+
+        IngestStats ingestStats = ingest.getStats();
+        return gson.toJson(ingestStats);
     }
+
+
+    public String getStats(Long businessId){
+        Business business = businessRepo.get(businessId);
+        if(business == null){
+            return gson.toJson(new HashMap<>());
+        }
+        String key = business.getUri();
+        if(!ingests.containsKey(key)){
+            return gson.toJson(new HashMap<>());
+        }
+        ItemGroupIngest ingest = ingests.get(key);
+        IngestStats ingestStats = ingest.getStats();
+        return gson.toJson(ingestStats);
+    }
+
 
     /**
      *
