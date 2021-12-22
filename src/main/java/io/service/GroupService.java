@@ -124,12 +124,6 @@ public class GroupService {
         groupRepo.save(itemGroup);
         ItemGroup savedItemGroup = groupRepo.getSaved();
 
-        String[] categories = req.getParameterValues("categories");
-        for(String id : categories){
-            GroupCategory groupCategory = new GroupCategory(savedItemGroup.getId(), Long.valueOf(id.trim()), businessId);
-            groupRepo.saveCategory(groupCategory);
-        }
-
         data.set("message", "Successfully started Item ItemGroup!");
         return "[redirect]/" + businessId + "/groups/edit/" + savedItemGroup.getId();
     }
@@ -193,7 +187,7 @@ public class GroupService {
         Business business = businessRepo.get(businessId);
 
         GroupOption groupOption = (GroupOption) qio.set(req, GroupOption.class);
-        groupRepo.saveOption(groupOption);
+//        optionRepo.saveOption(groupOption);
 
         data.set("message", "Successfully saved group option.");
 

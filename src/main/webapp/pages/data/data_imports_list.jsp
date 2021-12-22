@@ -5,8 +5,11 @@
     <p class="notify">${message}</p>
 </c:if>
 
-<h1 class="left-float">Data Imports</h1>
-<a href="${pageContext.request.contextPath}/import/media/${business.id}" class="button retro right-float" style="margin-top:20px;">New Item Image Import</a>
+<h1>Data Imports</h1>
+
+
+<a href="${pageContext.request.contextPath}/import/media/${business.id}" class="button retro" style="margin-top:20px;">New Item Image Import</a>&nbsp;&nbsp;
+<a href="${pageContext.request.contextPath}/imports/item_groups/new/${business.id}" class="button retro" style="margin-top:20px;">New Item Group Import</a>
 <br class="clear"/>
 
 <p>What is an item image import? An item image import is an image import that can be easily converted

@@ -18,16 +18,20 @@ import java.util.stream.Collectors;
 public class ItemGroupIngest {
 
     final int MODEL_NUMBER = 0;
-    final int QUANTITY = 1;
-    final int WEIGHT = 2;
+    final int QUANTITY     = 1;
+    final int WEIGHT       = 2;
 
     final int PRICE_HEADER = 1;
 
-    final int FIRST_ROW = 1;
+    final int FIRST_ROW  = 1;
     final int SECOND_ROW = 2;
-    final int THIRD_ROW = 2;
+    final int THIRD_ROW  = 3;
 
     IngestStats ingestStats;
+
+    Integer priceIdx = null;
+    Integer weightIdx = null;
+    Integer quantityIdx = null;
 
     Long designId;
     Long businessId;
@@ -42,6 +46,7 @@ public class ItemGroupIngest {
     public ItemGroupIngest(Builder builder){
         this.req = builder.req;
         this.designId = builder.designId;
+        this.ingestRepo = builder.ingestRepo;
         this.businessId = builder.businessId;
         this.modelRepo = builder.modelRepo;
         this.groupRepo = builder.groupRepo;
@@ -73,37 +78,37 @@ public class ItemGroupIngest {
 
             ItemGroup savedGroup = null;
 
-            int idx = 0;
-
-            Integer priceIdx = null;
-            Integer weightIdx = null;
-            Integer quantityIdx = null;
+            Integer idx = 0;
 
             while(scanner.hasNext()) {
-
+                idx++;
                 String line = scanner.nextLine();
                 String[] values = line.split(",");
 
-                for (int z = 0; z < values.length; z++) {
-                    if (idx == this.FIRST_ROW) {
-                        savedGroup = createGroup(designId, businessId, values);
-                        if (savedGroup == null) {
-                            unprocessed++;
-                            ingestStats.setUnprocessed(unprocessed);
-                            continue;
-                        }
-                    }
+                System.out.println(values.length);
 
-                    if (idx == this.SECOND_ROW) setIndexes(values, priceIdx, weightIdx, quantityIdx);
-                    if (idx == this.THIRD_ROW) {
-                        if (z >= quantityIdx && z < priceIdx) {
+
+                if (idx.equals(this.SECOND_ROW)) setIndexes(values);
+
+                if (idx.equals(this.FIRST_ROW)){
+                    savedGroup = createGroup(designId, businessId, values);
+                    if (savedGroup == null) {
+                        unprocessed++;
+                        ingestStats.setUnprocessed(unprocessed);
+                        continue;
+                    }
+                }
+
+                if (idx.equals(this.THIRD_ROW)) {
+                    for (int z = 0; z < values.length; z++) {
+                        if (z >= this.quantityIdx && z < this.priceIdx) {
                             GroupOption groupOption = new GroupOption();
                             groupOption.setIngestId(savedIngest.getId());
                             groupOption.setBusinessId(businessId);
                             groupOption.setGroupId(savedGroup.getId());
                             optionRepo.saveOption(groupOption);
                         }
-                        if(z >= priceIdx){
+                        if(z >= this.priceIdx){
                             String description = values[z];
                             PricingOption pricingOption = new PricingOption();
                             pricingOption.setIngestId(savedIngest.getId());
@@ -113,8 +118,11 @@ public class ItemGroupIngest {
                             priceRepo.saveOption(pricingOption);
                         }
                     }
+                }
 
-                    if (idx > this.THIRD_ROW) {
+                if (idx.compareTo(this.THIRD_ROW) >= 0) {
+
+                    for (int z = 0; z < values.length; z++) {
                         String modelNumber = values[this.MODEL_NUMBER];
                         String weight = values[this.WEIGHT];
                         String quantity = values[this.QUANTITY];
@@ -145,7 +153,7 @@ public class ItemGroupIngest {
 
                         if (z >= quantityIdx && z < priceIdx) {
                             String value = values[z];
-                            if(value.equals("")){
+                            if (value.equals("")) {
                                 modelRepo.delete(savedModel.getId());
                                 unprocessed++;
                                 ingestStats.setUnprocessed(unprocessed);
@@ -158,9 +166,9 @@ public class ItemGroupIngest {
                             groupValue.setValue(value);
                             optionRepo.saveValue(groupValue);
                         }
-                        if(z >= priceIdx){
+                        if (z >= priceIdx) {
                             String price = values[z];
-                            if(price.equals("")){
+                            if (price.equals("")) {
                                 //Todo: delete model
                                 optionRepo.deleteValues(savedModel.getId());
                                 modelRepo.delete(savedModel.getId());
@@ -168,7 +176,7 @@ public class ItemGroupIngest {
                                 ingestStats.setUnprocessed(unprocessed);
                                 continue;
                             }
-                            try{
+                            try {
                                 PricingValue pricingValue = new PricingValue();
                                 pricingValue.setIngestId(savedIngest.getId());
                                 pricingValue.setGroupId(savedGroup.getId());
@@ -176,7 +184,7 @@ public class ItemGroupIngest {
                                 pricingValue.setModelId(savedModel.getId());
                                 pricingValue.setPrice(new BigDecimal(price));
                                 priceRepo.saveValue(pricingValue);
-                            }catch(Exception ex){
+                            } catch (Exception ex) {
                                 //Todo: delete
                                 //delete model options
                                 //model
@@ -191,7 +199,6 @@ public class ItemGroupIngest {
 
                     }
 
-                    idx++;
                     processed++;
                     ingestStats.setCount(idx);
                     ingestStats.setProcessed(processed);
@@ -214,12 +221,18 @@ public class ItemGroupIngest {
             return null;
         }
 
-        String priceHeader = values[this.PRICE_HEADER];
-        if(priceHeader.equals("")){
+        String priceHeader = "";
+        if(values.length >= 2) {
+            priceHeader = values[this.PRICE_HEADER];
+        }
+        if (priceHeader.equals("")) {
             return null;
         }
 
-        String quantityHeader = values[2];
+        String quantityHeader = "";
+        if(values.length >= 3) {
+            quantityHeader = values[2];
+        }
 
         ItemGroup itemGroup = new ItemGroup();
         itemGroup.setBusinessId(businessId);
@@ -228,23 +241,22 @@ public class ItemGroupIngest {
         itemGroup.setPricingHeader(priceHeader);
         itemGroup.setqHeader(quantityHeader);
         groupRepo.save(itemGroup);
-        return groupRepo.getSaved();
+        ItemGroup savedItemGroup = groupRepo.getSaved();
+        return savedItemGroup;
     }
 
 
-    protected void setIndexes(String[] values, Integer priceIdx, Integer weightIdx, Integer quantityIdx){
+    protected void setIndexes(String[] values){
         for(int idx = 0; idx < values.length; idx++){
-            if(priceIdx != null &&
+            if(this.priceIdx == null &&
                     values[idx].equals("::prices::")){
-                priceIdx = idx;
+                this.priceIdx = idx;
             }
-            if(weightIdx != null &&
-                    values[idx].equals("::weight::")){
-                weightIdx = idx;
+            if(values[idx].equals("::weight::")){
+                this.weightIdx = idx;
             }
-            if(quantityIdx != null &&
-                    values[idx].equals("::quantity::")){
-                quantityIdx = idx;
+            if(values[idx].equals("::quantity::")){
+                this.quantityIdx = idx;
             }
         }
     }

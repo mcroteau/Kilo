@@ -39,20 +39,16 @@ import java.util.stream.Collectors;
 @Service
 public class DataService {
 
+    public DataService(){
+        this.ingests = new HashMap<>();
+    }
+
+    Map<String, ItemGroupIngest> ingests;
+
     Gson gson = new Gson();
 
     @Inject
     Qio qio;
-
-    Map<String, ItemGroupIngest> ingests;
-
-    final String APPLICATION_NAME = "Kilo Development";
-    final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    final String TOKENS_DIRECTORY_PATH = "tokens";
-
-    final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
-    final String CREDENTIALS_FILE_PATH = "/google-credentials.json";
-
 
     @Inject
     ItemRepo itemRepo;
@@ -454,6 +450,7 @@ public class DataService {
         try{
 
             Design design = designRepo.getBase(businessId);
+
             ingest = new ItemGroupIngest.Builder()
                     .withDesignId(design.getId())
                     .withBusinessId(businessId)
@@ -515,95 +512,95 @@ public class DataService {
 
 
 
-    public String ingestOld(Long businessId, ResponseData data, HttpServletRequest req){
-        if(!authService.isAuthenticated()){
-            return "[redirect]/";
-        }
-
-        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
-        if(!authService.isAdministrator() &&
-                !authService.hasPermission(permission)){
-            data.set("message", "You don't have access to import for this business.");
-            return "[redirect]/";
-        }
-
-        try {
-            ItemGroupImport itemGroupImport = (ItemGroupImport)qio.set(req, ItemGroupImport.class);
-            if(itemGroupImport.getSpreadsheetId().equals("") ||
-                    itemGroupImport.getStartCell().equals("") ||
-                    itemGroupImport.getEndCell().equals("")){
-                data.set("itemGroupImport", itemGroupImport);
-                data.set("message", "Please make sure all fields are complete, we are sorry.");
-                return "[redirect]/" + businessId + "/imports/group_items";
-            }
-
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            final String range = "Class Data!" + itemGroupImport.getStartCell() + ":" + itemGroupImport.getEndCell();
-
-            Sheets service = null;
-
-
-            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
-
-            ValueRange response = service.spreadsheets().values()
-                    .get(itemGroupImport.getSpreadsheetId(), range)
-                    .execute();
-
-            List<List<Object>> values = response.getValues();
-
-            if (values != null &&
-                    !values.isEmpty()) {
-                for (int z = 0; z < values.size(); z++) {
-                    List<Object> entries = values.get(z);
-                    for(Object entry : entries){
-                        System.out.print(entry);
-                    }
-                    System.out.println("");
-                }
-            }
-            if (values == null ||
-                    values.isEmpty()) {
-                data.set("itemGroupImport", itemGroupImport);
-                data.set("message", "Whao nelly, something aint right. Please make sure your data is correct.");
-                return "[redirect]/" + businessId + "/imports/group_items";
-            }
-
-            System.out.println("Name, Major");
-
-        } catch (IOException | GeneralSecurityException ex) {
-            ex.printStackTrace();
-            data.set("message", "Oh no! Unable to locate authentication credentials. Please contact someone!");
-            return "[redirect]/";
-        }
-
-        data.set("message", "Successfully retrieved and saved spreadsheet data.");
-        return "[redirect]/" + businessId + "/imports/group_items";
-    }
-
-
-    public Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
-        InputStream in = DataService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        if (in == null) {
-            throw new FileNotFoundException("creds not found : " + CREDENTIALS_FILE_PATH);
-        }
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+//    public String ingestOld(Long businessId, ResponseData data, HttpServletRequest req){
+//        if(!authService.isAuthenticated()){
+//            return "[redirect]/";
+//        }
+//
+//        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+//        if(!authService.isAdministrator() &&
+//                !authService.hasPermission(permission)){
+//            data.set("message", "You don't have access to import for this business.");
+//            return "[redirect]/";
+//        }
+//
+//        try {
+//            ItemGroupImport itemGroupImport = (ItemGroupImport)qio.set(req, ItemGroupImport.class);
+//            if(itemGroupImport.getSpreadsheetId().equals("") ||
+//                    itemGroupImport.getStartCell().equals("") ||
+//                    itemGroupImport.getEndCell().equals("")){
+//                data.set("itemGroupImport", itemGroupImport);
+//                data.set("message", "Please make sure all fields are complete, we are sorry.");
+//                return "[redirect]/" + businessId + "/imports/group_items";
+//            }
+//
+//            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+//            final String range = "Class Data!" + itemGroupImport.getStartCell() + ":" + itemGroupImport.getEndCell();
+//
+//            Sheets service = null;
+//
+//
+//            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+//                    .setApplicationName(APPLICATION_NAME)
+//                    .build();
+//
+//            ValueRange response = service.spreadsheets().values()
+//                    .get(itemGroupImport.getSpreadsheetId(), range)
+//                    .execute();
+//
+//            List<List<Object>> values = response.getValues();
+//
+//            if (values != null &&
+//                    !values.isEmpty()) {
+//                for (int z = 0; z < values.size(); z++) {
+//                    List<Object> entries = values.get(z);
+//                    for(Object entry : entries){
+//                        System.out.print(entry);
+//                    }
+//                    System.out.println("");
+//                }
+//            }
+//            if (values == null ||
+//                    values.isEmpty()) {
+//                data.set("itemGroupImport", itemGroupImport);
+//                data.set("message", "Whao nelly, something aint right. Please make sure your data is correct.");
+//                return "[redirect]/" + businessId + "/imports/group_items";
+//            }
+//
+//            System.out.println("Name, Major");
+//
+//        } catch (IOException | GeneralSecurityException ex) {
+//            ex.printStackTrace();
+//            data.set("message", "Oh no! Unable to locate authentication credentials. Please contact someone!");
+//            return "[redirect]/";
+//        }
+//
+//        data.set("message", "Successfully retrieved and saved spreadsheet data.");
+//        return "[redirect]/" + businessId + "/imports/group_items";
+//    }
 
 
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-
-//        List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
-//        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, clientSecrets, scopes).setDataStoreFactory(new MemoryDataStoreFactory())
-//                .setAccessType("offline").build();
-//        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("117778828736287500064");
-
-    }
+//    public Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
+//        InputStream in = DataService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+//        if (in == null) {
+//            throw new FileNotFoundException("creds not found : " + CREDENTIALS_FILE_PATH);
+//        }
+//        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+//
+//
+//        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+//                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+//                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+//                .setAccessType("offline")
+//                .build();
+//        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+//        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+//
+////        List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
+////        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, clientSecrets, scopes).setDataStoreFactory(new MemoryDataStoreFactory())
+////                .setAccessType("offline").build();
+////        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("117778828736287500064");
+//
+//    }
 
 }

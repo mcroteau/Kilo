@@ -18,7 +18,9 @@ public class GroupRepo {
 
     public ItemGroup getSaved() {
         String idSql = "select max(id) from item_groups";
+        System.out.println(qio);
         long id = qio.getLong(idSql, new Object[]{});
+        System.out.println("id " + id);
         return get(id);
     }
 
@@ -59,14 +61,15 @@ public class GroupRepo {
     }
 
     public Boolean save(ItemGroup itemGroup){
-        String sql = "insert into item_groups (name, q_header, pricing_header, image_uri, business_id, design_id) values ('[+]','[+]','[+]','[+]',[+],[+])";
+        String sql = "insert into item_groups (name, q_header, pricing_header, image_uri, business_id, design_id, ingest_id) values ('[+]','[+]','[+]','[+]',[+],[+],[+])";
         qio.save(sql, new Object[] {
                 itemGroup.getName(),
                 itemGroup.getImageUri(),
                 itemGroup.getqHeader(),
                 itemGroup.getPricingHeader(),
                 itemGroup.getBusinessId(),
-                itemGroup.getDesignId()
+                itemGroup.getDesignId(),
+                itemGroup.getIngestId()
         });
         return true;
     }

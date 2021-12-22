@@ -258,7 +258,6 @@ create table if not exists ingests(
 create table if not exists item_groups(
 	id bigint PRIMARY KEY AUTO_INCREMENT,
 	name character varying (253),
-	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	business_id bigint NOT NULL REFERENCES businesses(id),
 	design_id bigint NOT NULL REFERENCES designs(id),
     image_uri character varying (253),

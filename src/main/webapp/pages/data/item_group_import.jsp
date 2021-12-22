@@ -4,20 +4,28 @@
 
 <p>We hope this makes life easy. Here is a template for an Item Group to be used for an import.</p>
 
-<form action="${pageContext.request.contextPath}/imports/item_groups/${business.id}" method="post">
+<form action="${pageContext.request.contextPath}/imports/item_groups/${business.id}" id="import-form"  enctype="multipart/form-data" method="post">
 
-    <label>Spreadsheet Id</label>
-    <span class="tiny">The Id of the spread sheet of interest. Can be found in the address
-    bar of your web browser on Sheets.</span>
-    <input type="text" name="spreadsheetId"/>
-
-    <label>Starting Cell</label>
-    <input type="text" name="startCell"/>
-
-    <label>Ending Cell</label>
-    <input type="text" name="endCell"/>
+    <label>Item Image Files</label>
+    <input type="file" name="media" multiple/>
 
     <div style="text-align: right;margin-top: 20px;">
-        <input type="submit" value="Import Item Group" class="button green" onclick="this.disabled=true;this.value='Getting data...';this.form.submit();"/>
+        <input type="submit" value="Import Item Groups" class="button green" id="import-submit"/>
     </div>
 </form>
+
+<script>
+
+    $(document).ready(function(){
+
+        const $form = $('#import-form');
+        let $submit = $('#import-submit');
+
+        $submit.click(function(){
+            this.disabled = true;
+            this.value = "Importing Data...";
+            $form.submit();
+        })
+
+    });
+</script>
