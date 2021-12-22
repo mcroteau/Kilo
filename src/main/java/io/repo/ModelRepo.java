@@ -6,6 +6,7 @@ import qio.Qio;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +47,14 @@ public class ModelRepo {
     }
 
     public Boolean save(GroupModel groupModel){
-        String sql = "insert into group_models (model_number, group_id, weight) values ('[+]',[+],[+])";
+        String sql = "insert into group_models (model_number, ingest_id, group_id, business_id, weight, quantity) values ('[+]',[+],[+],[+],[+],[+])";
         qio.save(sql, new Object[] {
                 groupModel.getModelNumber(),
+                groupModel.getIngestId(),
                 groupModel.getGroupId(),
-                groupModel.getWeight()
+                groupModel.getBusinessId(),
+                groupModel.getWeight(),
+                groupModel.getQuantity(),
         });
         return true;
     }

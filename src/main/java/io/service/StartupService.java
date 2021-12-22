@@ -80,6 +80,7 @@ public class StartupService {
         Role savedBusinessRole = roleRepo.get(Kilo.BUSINESS_ROLE);
         Role savedCustomerRole = roleRepo.get(Kilo.CUSTOMER_ROLE);
 
+        mock(password, savedCustomerRole,  savedBusinessRole);
     }
 
     protected void mock(String password, Role savedCustomerRole, Role savedBusinessRole){

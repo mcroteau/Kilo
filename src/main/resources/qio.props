@@ -5,7 +5,7 @@ host=localhost:3000
 #host=yourdomain.com
 
 ### qio settings ###
-qio.env=create
+qio.env=create,drop
 qio.assets=benefit
 qio.properties=this
 

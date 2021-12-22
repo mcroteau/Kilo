@@ -58,11 +58,12 @@ public class PriceRepo {
     }
 
     public Boolean saveValue(PricingValue pricingValue){
-        String sql = "insert into pricing_values (price, ingest_id, model_id, business_id) values ([+],[+],[+],[+])";
+        String sql = "insert into pricing_values (price, ingest_id, model_id, group_id, business_id) values ([+],[+],[+],[+],[+])";
         qio.save(sql, new Object[] {
                 pricingValue.getPrice(),
                 pricingValue.getIngestId(),
                 pricingValue.getModelId(),
+                pricingValue.getGroupId(),
                 pricingValue.getBusinessId()
         });
         return true;

@@ -386,12 +386,13 @@ public class DataService {
         for(Ingest ingest: ingests){
             List<ItemGroup> itemGroups = groupRepo.getList(ingest.getId());
             for(ItemGroup itemGroup: itemGroups){
+                List<GroupOption> groupOptions = optionRepo.getListOptions(itemGroup.getId());
+                itemGroup.setGroupOptions(groupOptions);
+
                 List<GroupModel> groupModels = modelRepo.getList(itemGroup.getId());
                 for(GroupModel groupModel : groupModels){
-                    List<GroupOption> groupOptions = optionRepo.getListOptions(groupModel.getId());
                     List<GroupOptionValue> groupValues = optionRepo.getListValues(groupModel.getId());
                     List<PricingValue> pricingValues = priceRepo.getListValues(groupModel.getId());
-                    groupModel.setGroupOptions(groupOptions);
                     groupModel.setGroupValues(groupValues);
                     groupModel.setPricingValues(pricingValues);
                 }
@@ -400,7 +401,7 @@ public class DataService {
                 List<PricingOption> pricingOptions = priceRepo.getListOptions(itemGroup.getId());
                 itemGroup.setPricingOptions(pricingOptions);
             }
-
+            ingest.setItemGroups(itemGroups);
         }
 
         data.set("ingests", ingests);
@@ -470,24 +471,54 @@ public class DataService {
             data.set("message", "Oh no! Will you try again, it may be something small with your data.");
             return "[redirect]/";
         }
+        IngestStats stats = getStats(businessId);
+        Integer count = 0;
+        if(stats != null)count = stats.getProcessed();
 
-        IngestStats ingestStats = ingest.getStats();
-        return gson.toJson(ingestStats);
+        data.set("message", "Successfully imported " + count + " item groups");
+        return "[redirect]/imports/item_groups/" + businessId;
     }
 
 
-    public String getStats(Long businessId){
+    public IngestStats getStats(Long businessId){
         Business business = businessRepo.get(businessId);
         if(business == null){
-            return gson.toJson(new HashMap<>());
+            return null;
         }
         String key = business.getUri();
         if(!ingests.containsKey(key)){
-            return gson.toJson(new HashMap<>());
+            return null;
         }
         ItemGroupIngest ingest = ingests.get(key);
         IngestStats ingestStats = ingest.getStats();
-        return gson.toJson(ingestStats);
+        return ingestStats;
+    }
+
+    public String deleteGroups(Long itemGroupId, Long businessId, ResponseData data, HttpServletRequest req) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+        
+
+        /*
+            delete pricing values
+            delete option values
+            delete option groups
+            delete models
+            delete item groups
+            delete ingest
+         */
+
+
+        data.set("message", "Successfully removed item group");
+        return "[redirect]/imports/item_groups/" + businessId;
     }
 
 

@@ -15,6 +15,7 @@ public class ItemGroup {
 
     List<GroupModel> groupModels;
     List<PricingOption> pricingOptions;
+    List<GroupOption> groupOptions;
 
     public Long getId() {
         return id;
@@ -94,5 +95,13 @@ public class ItemGroup {
 
     public void setPricingOptions(List<PricingOption> pricingOptions) {
         this.pricingOptions = pricingOptions;
+    }
+
+    public List<GroupOption> getGroupOptions() {
+        return groupOptions;
+    }
+
+    public void setGroupOptions(List<GroupOption> groupOptions) {
+        this.groupOptions = groupOptions;
     }
 }

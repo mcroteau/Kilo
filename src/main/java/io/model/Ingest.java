@@ -1,9 +1,12 @@
 package io.model;
 
+import java.util.List;
+
 public class Ingest {
     Long id;
     Long businessId;
     Long dateIngest;
+    List<ItemGroup> itemGroups;
 
     public Long getId() {
         return id;
@@ -27,5 +30,13 @@ public class Ingest {
 
     public void setDateIngest(Long dateIngest) {
         this.dateIngest = dateIngest;
+    }
+
+    public List<ItemGroup> getItemGroups() {
+        return itemGroups;
+    }
+
+    public void setItemGroups(List<ItemGroup> itemGroups) {
+        this.itemGroups = itemGroups;
     }
 }

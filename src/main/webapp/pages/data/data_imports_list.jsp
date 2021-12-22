@@ -7,31 +7,9 @@
 
 <h1>Data Imports</h1>
 
-
-<a href="${pageContext.request.contextPath}/import/media/${business.id}" class="button retro" style="margin-top:20px;">New Item Image Import</a>&nbsp;&nbsp;
-<a href="${pageContext.request.contextPath}/imports/item_groups/new/${business.id}" class="button retro" style="margin-top:20px;">New Item Group Import</a>
+<a href="${pageContext.request.contextPath}/import/media/${business.id}" class="button remove" style="margin-top:20px;">New Item Image Import</a>&nbsp;&nbsp;
+<a href="${pageContext.request.contextPath}/imports/item_groups/new/${business.id}" class="button orange" style="margin-top:20px;">New Item Group Import</a>
 <br class="clear"/>
 
-<p>What is an item image import? An item image import is an image import that can be easily converted
-    into items.</p>
-
-<c:if test="${dataImports.size() > 0}">
-    <table>
-        <tr>
-            <th>Date</th>
-            <th></th>
-        </tr>
-        <c:forEach var="dataImport" items="${dataImports}" varStatus="idx">
-            <tr>
-                <td>${dataImport.dateImport}</td>
-                <td>
-                    <a href="${pageContext.request.contextPath}/imports/media/${business.id}/${dataImport.id}" class="button orange">Power Grid</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
-<c:if test="${dataImports == null || dataImports.size() == 0}">
-    <p class="notify">No item image imports added yet! <a href="${pageContext.request.contextPath}/import/media/${business.id}" class="href-dotted">New Import</a></p>
-</c:if>
+<p>Item import allows gives you the ability to easily import items using images.</p>
+<p>Item groups are what they sound like, groups of items. Meant for wholesale and distributors.</p>

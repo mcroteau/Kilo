@@ -13,7 +13,6 @@ public class GroupModel {
     BigDecimal quantity;
     String perBoxQuantity;
 
-    List<GroupOption> groupOptions;
     List<GroupOptionValue> groupValues;
     List<PricingValue> pricingValues;
 
@@ -79,14 +78,6 @@ public class GroupModel {
 
     public void setPerBoxQuantity(String perBoxQuantity) {
         this.perBoxQuantity = perBoxQuantity;
-    }
-
-    public List<GroupOption> getGroupOptions() {
-        return groupOptions;
-    }
-
-    public void setGroupOptions(List<GroupOption> groupOptions) {
-        this.groupOptions = groupOptions;
     }
 
     public List<GroupOptionValue> getGroupValues() {

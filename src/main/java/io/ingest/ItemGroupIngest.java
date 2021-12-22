@@ -50,6 +50,8 @@ public class ItemGroupIngest {
         this.businessId = builder.businessId;
         this.modelRepo = builder.modelRepo;
         this.groupRepo = builder.groupRepo;
+        this.priceRepo = builder.priceRepo;
+        this.optionRepo = builder.optionRepo;
         this.groupModels = new ArrayList<>();
         this.ingestStats = new IngestStats();
     }
@@ -91,14 +93,15 @@ public class ItemGroupIngest {
                 if (idx.equals(this.SECOND_ROW)) setIndexes(values);
 
                 if (idx.equals(this.FIRST_ROW)){
-                    savedGroup = createGroup(designId, businessId, values);
-                    if (savedGroup == null) {
-                        unprocessed++;
-                        ingestStats.setUnprocessed(unprocessed);
-                        continue;
-                    }
+                    savedGroup = createGroup(savedIngest.getId(), designId, businessId, values);
+
                 }
 
+                if (savedGroup == null) {
+                    unprocessed++;
+                    ingestStats.setUnprocessed(unprocessed);
+                    continue;
+                }
                 if (idx.equals(this.THIRD_ROW)) {
                     for (int z = 0; z < values.length; z++) {
                         if (z >= this.quantityIdx && z < this.priceIdx) {
@@ -108,7 +111,7 @@ public class ItemGroupIngest {
                             groupOption.setGroupId(savedGroup.getId());
                             optionRepo.saveOption(groupOption);
                         }
-                        if(z >= this.priceIdx){
+                        if (z >= this.priceIdx) {
                             String description = values[z];
                             PricingOption pricingOption = new PricingOption();
                             pricingOption.setIngestId(savedIngest.getId());
@@ -120,9 +123,14 @@ public class ItemGroupIngest {
                     }
                 }
 
-                if (idx.compareTo(this.THIRD_ROW) >= 0) {
+                if (idx.compareTo(this.THIRD_ROW) > 0) {
 
                     for (int z = 0; z < values.length; z++) {
+                        if(values.length < priceIdx){
+                            unprocessed++;
+                            ingestStats.setUnprocessed(unprocessed);
+                            continue;
+                        }
                         String modelNumber = values[this.MODEL_NUMBER];
                         String weight = values[this.WEIGHT];
                         String quantity = values[this.QUANTITY];
@@ -215,7 +223,7 @@ public class ItemGroupIngest {
         return this.ingestStats;
     }
 
-    protected ItemGroup createGroup(Long designId, Long businessId, String[] values){
+    protected ItemGroup createGroup(Long ingestId, Long designId, Long businessId, String[] values){
         String name = values[0];
         if(name.equals("")){
             return null;
@@ -225,9 +233,6 @@ public class ItemGroupIngest {
         if(values.length >= 2) {
             priceHeader = values[this.PRICE_HEADER];
         }
-        if (priceHeader.equals("")) {
-            return null;
-        }
 
         String quantityHeader = "";
         if(values.length >= 3) {
@@ -235,6 +240,7 @@ public class ItemGroupIngest {
         }
 
         ItemGroup itemGroup = new ItemGroup();
+        itemGroup.setIngestId(ingestId);
         itemGroup.setBusinessId(businessId);
         itemGroup.setDesignId(designId);
         itemGroup.setName(name);

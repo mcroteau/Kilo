@@ -84,4 +84,12 @@ public class DataHandler {
                          @Variable Long businessId) {
         return dataService.ingest(businessId, data, req);
     }
+
+    @Post("/imports/item_groups/delete/{{businessId}}/{{od}}")
+    public String deleteGroups(HttpServletRequest req,
+                         ResponseData data,
+                         @Variable Long businessId,
+                         @Variable Long itemGroupId) {
+        return dataService.deleteGroups(itemGroupId, businessId, data, req);
+    }
 }

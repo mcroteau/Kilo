@@ -52,7 +52,7 @@ public class OptionRepo {
     }
 
     public List<GroupOption> getListOptions(long id){
-        String sql = "select * from group_options where model_id = [+] order by id asc";
+        String sql = "select * from group_options where group_id = [+] order by id asc";
         List<GroupOption> itemGroupOptions = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupOption.class);
         return itemGroupOptions;
     }
