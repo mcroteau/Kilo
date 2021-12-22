@@ -1,8 +1,8 @@
 package io.repo;
 
-import io.model.Group;
-import io.model.GroupCategory;
 import io.model.GroupOption;
+import io.model.ItemGroup;
+import io.model.GroupCategory;
 import qio.Qio;
 import qio.annotate.DataStore;
 import qio.annotate.Inject;
@@ -16,7 +16,7 @@ public class GroupRepo {
     @Inject
     Qio qio;
 
-    public Group getSaved() {
+    public ItemGroup getSaved() {
         String idSql = "select max(id) from groups";
         long id = qio.getLong(idSql, new Object[]{});
         return get(id);
@@ -28,43 +28,51 @@ public class GroupRepo {
         return count;
     }
 
-    public Group get(long id){
+    public ItemGroup get(long id){
         String sql = "select * from groups where id = [+]";
-        Group group = (Group) qio.get(sql, new Object[] { id }, Group.class);
-        return group;
+        ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { id }, ItemGroup.class);
+        return itemGroup;
     }
 
-    public Group get(long id, long businessId){
+    public ItemGroup get(String name){
+        String sql = "select * from groups where name = '[+]'";
+        ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { name }, ItemGroup.class);
+        return itemGroup;
+    }
+
+    public ItemGroup get(long id, long businessId){
         String sql = "select * from groups where id = [+] and business_id = [+]";
-        Group group = (Group) qio.get(sql, new Object[] { id, businessId }, Group.class);
-        return group;
+        ItemGroup itemGroup = (ItemGroup) qio.get(sql, new Object[] { id, businessId }, ItemGroup.class);
+        return itemGroup;
     }
 
-    public List<Group> getList(){
+    public List<ItemGroup> getList(){
         String sql = "select * from groups order by id desc";
-        List<Group> itemGroups = (ArrayList) qio.getList(sql, new Object[]{}, Group.class);
-        return itemGroups;
+        List<ItemGroup> itemItemGroups = (ArrayList) qio.getList(sql, new Object[]{}, ItemGroup.class);
+        return itemItemGroups;
     }
 
-    public List<Group> getList(long id){
+    public List<ItemGroup> getList(long id){
         String sql = "select * from groups where business_id = [+] and active = true order by id desc";
-        List<Group> itemGroups = (ArrayList) qio.getList(sql, new Object[]{ id }, Group.class);
-        return itemGroups;
+        List<ItemGroup> itemItemGroups = (ArrayList) qio.getList(sql, new Object[]{ id }, ItemGroup.class);
+        return itemItemGroups;
     }
 
-    public Boolean save(Group group){
-        String sql = "insert into groups (name, image_uri, business_id, design_id) values ('[+]','[+]',[+],[+])";
+    public Boolean save(ItemGroup itemGroup){
+        String sql = "insert into groups (name, q_header, pricing_header, image_uri, business_id, design_id) values ('[+]','[+]','[+]','[+]',[+],[+])";
         qio.save(sql, new Object[] {
-                group.getName(),
-                group.getImageUri(),
-                group.getBusinessId(),
-                group.getDesignId()
+                itemGroup.getName(),
+                itemGroup.getImageUri(),
+                itemGroup.getqHeader(),
+                itemGroup.getPricingHeader(),
+                itemGroup.getBusinessId(),
+                itemGroup.getDesignId()
 
         });
         return true;
     }
 
-    public Boolean update(Group item){
+    public Boolean update(ItemGroup item){
         String sql = "update groups set name = '[+]', design_id = [+] where id = [+]";
         qio.update(sql, new Object[] {
                 item.getName(),
@@ -77,15 +85,6 @@ public class GroupRepo {
     public boolean delete(long id){
         String sql = "delete from groups where id = [+]";
         qio.delete(sql, new Object[] { id });
-        return true;
-    }
-
-    public boolean saveOption(GroupOption groupOption) {
-        String sql = "insert into group_options (title, business_id) values ('[+]',[+])";
-        qio.save(sql, new Object[] {
-                groupOption.getTitle(),
-                groupOption.getBusinessId()
-        });
         return true;
     }
 

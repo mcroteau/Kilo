@@ -27,9 +27,8 @@ easypost.key=
 stripe.key=
 
 ### digital ocean settings ###
-digital.ocean.key=
-digital.ocean.secret=
-
+digital.ocean.key=RHTQEPOROCUUUBI7WCAF
+digital.ocean.secret=QvqvuKCV/SQb1jpM8wyjtfUYKAJ7a0bDXOitZnxlBBg
 
 ### mail settings ###
 smtp.host=

@@ -23,7 +23,7 @@
                 <td><a href="${pageContext.request.contextPath}/${business.uri}/${page.uri}" class="href-dotted-black" target="_blank">${page.name}</a></td>
                 <td>${page.uri}</td>
                 <td>
-                    <form action="${pageContext.request.contextPath}/pages/delete/${business.id}/${page.id}" method="post" m onsubmit="return confirm('Are you sure you want to delete this page?');">
+                    <form action="${pageContext.request.contextPath}/pages/delete/${business.id}/${page.id}" method="post" onsubmit="return confirm('Are you sure you want to delete this page?');">
                         <input type="submit" value="Delete" class="button remove"/>
                     </form>
                 </td>

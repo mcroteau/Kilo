@@ -65,4 +65,17 @@ public class DataHandler {
                               @Variable Long importId){
         return dataService.deleteImport(businessId, importId, data, req);
     }
+
+    @Get("/imports/item_groups/{{businessId}}")
+    public String itemGroups(ResponseData data,
+                              @Variable Long businessId) {
+        return dataService.viewIngestImport(businessId, data);
+    }
+
+    @Post("/imports/item_groups/{{businessId}}")
+    public String ingest(HttpServletRequest req,
+                         ResponseData data,
+                         @Variable Long businessId) {
+        return dataService.ingest(businessId, data, req);
+    }
 }

@@ -127,7 +127,7 @@
                     <span class="triangle">&nbsp;</span>
                 </div>
                 <span id="identity">Kilo</span>
-                <span class="information" style="margin-top:71px;display: inline-block;">A Marketplace for<br/> Marketplaces</span>
+                <span class="information" style="margin-top:71px;display: inline-block;">A Wholesales<br/> Marketplaces</span>
             </a>
 
             <div id="guest-menu">

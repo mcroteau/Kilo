@@ -15,11 +15,11 @@
 			<input type="hidden" name="id" value="${user.id}"/>
 			<input type="hidden" name="phone" value="${user.phone}"/>
 
-			<div class="form-group">
+			<div class="form-itemGroup">
 				<label for="password">${user.phone}</label>
 			</div>
 
-			<div class="form-group">
+			<div class="form-itemGroup">
 				<label for="password">New Password</label>
 				<input type="text" name="password" class="form-control" id="password" placeholder="Password" value="">
 			</div>

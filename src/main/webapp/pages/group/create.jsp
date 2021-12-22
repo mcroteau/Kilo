@@ -14,7 +14,7 @@
         <input type="hidden" name="businessId" value="${business.id}"/>
 
         <label>Name</label>
-        <input type="text" name="name" value="${group.name}"/>
+        <input type="text" name="name" value="${itemGroup.name}"/>
 
         <div class="left-float" style="width:140px;">
             <label>Categories</label>

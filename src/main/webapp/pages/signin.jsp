@@ -29,14 +29,14 @@
 
         <form action="${pageContext.request.contextPath}/authenticate" modelAttribute="user" method="post" >
 
-            <div class="form-group">
+            <div class="form-itemGroup">
                 <label for="username">Username
                 <br/><span class="tiny">Phone Number or Email Address</span>
                 </label>
                 <input type="text" name="username" class="form-control" id="username" placeholder=""  value=""  style="width:100%;">
             </div>
 
-            <div class="form-group">
+            <div class="form-itemGroup">
                 <label for="password">Password</label>
                 <input type="password" name="password" class="form-control" id="password" style="width:100%;" value=""  placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
             </div>

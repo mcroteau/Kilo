@@ -2,9 +2,13 @@ package io;
 
 import com.easypost.model.Rate;
 import io.model.Business;
+import jakarta.servlet.http.Part;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -187,4 +191,10 @@ public class Kilo {
 		}
 		return value;
 	}
+
+    public static String getImage(Part part) throws IOException {
+		String original = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+		String ext = Kilo.getExt(original);
+		return Kilo.getString(9) + "." + ext;
+    }
 }

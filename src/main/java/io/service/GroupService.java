@@ -98,7 +98,7 @@ public class GroupService {
             return "[redirect]/";
         }
 
-        Group group = (Group) qio.set(req, Group.class);
+        ItemGroup itemGroup = (ItemGroup) qio.set(req, ItemGroup.class);
 
         List<Part> fileParts = null;
         try {
@@ -113,7 +113,7 @@ public class GroupService {
                 String ext = Kilo.getExt(original);
                 String name = Kilo.getString(9) + "." + ext;
                 seaService.send(name, is);
-                group.setImageUri(Kilo.OCEAN_ENDPOINT + name);
+                itemGroup.setImageUri(Kilo.OCEAN_ENDPOINT + name);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,17 +121,17 @@ public class GroupService {
             e.printStackTrace();
         }
 
-        groupRepo.save(group);
-        Group savedGroup = groupRepo.getSaved();
+        groupRepo.save(itemGroup);
+        ItemGroup savedItemGroup = groupRepo.getSaved();
 
         String[] categories = req.getParameterValues("categories");
         for(String id : categories){
-            GroupCategory groupCategory = new GroupCategory(savedGroup.getId(), Long.valueOf(id.trim()), businessId);
+            GroupCategory groupCategory = new GroupCategory(savedItemGroup.getId(), Long.valueOf(id.trim()), businessId);
             groupRepo.saveCategory(groupCategory);
         }
 
-        data.set("message", "Successfully started Item Group!");
-        return "[redirect]/" + businessId + "/groups/edit/" + savedGroup.getId();
+        data.set("message", "Successfully started Item ItemGroup!");
+        return "[redirect]/" + businessId + "/groups/edit/" + savedItemGroup.getId();
     }
 
     public String edit(Long id, Long businessId, ResponseData data, HttpServletRequest req) {
@@ -148,13 +148,13 @@ public class GroupService {
         List<GroupOption> groupOptions = groupRepo.getListOptions(businessId);
         data.set("groupOptions", groupOptions);
 
-        Group group = groupRepo.get(id);
-        data.set("group", group);
+        ItemGroup itemGroup = groupRepo.get(id);
+        data.set("itemGroup", itemGroup);
 
         if(req.getParameter("optionsCount") != null)data.set("optionsCount", req.getParameter("optionsCount"));
         if(req.getParameter("pricesCount") != null)data.set("pricesCount", req.getParameter("pricesCount"));
 
-        data.set("page", "/pages/group/edit.jsp");
+        data.set("page", "/pages/itemGroup/edit.jsp");
         return "/designs/auth.jsp";
     }
 

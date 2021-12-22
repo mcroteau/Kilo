@@ -1,8 +1,23 @@
 package io.service;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.ValueRange;
 import io.Kilo;
+import io.engine.GroupIngest;
 import io.model.*;
 import io.repo.*;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import qio.Qio;
@@ -10,15 +25,29 @@ import qio.annotate.Inject;
 import qio.annotate.Service;
 import qio.model.web.ResponseData;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.security.GeneralSecurityException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class DataService {
+
+    @Inject
+    Qio qio;
+
+    final String APPLICATION_NAME = "Kilo Development";
+    final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    final String TOKENS_DIRECTORY_PATH = "tokens";
+
+    final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
+    final String CREDENTIALS_FILE_PATH = "/google-credentials.json";
+
 
     @Inject
     ItemRepo itemRepo;
@@ -36,6 +65,21 @@ public class DataService {
     DataRepo dataRepo;
 
     @Inject
+    ModelRepo modelRepo;
+
+    @Inject
+    GroupRepo groupRepo;
+
+    @Inject
+    OptionRepo optionRepo;
+
+    @Inject
+    IngestRepo ingestRepo;
+
+    @Inject
+    PriceRepo priceRepo;
+
+    @Inject
     AuthService authService;
 
     @Inject
@@ -44,19 +88,34 @@ public class DataService {
     @Inject
     BusinessService businessService;
 
+
     public String viewImportMedia(Long businessId, ResponseData data) {
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
         businessService.setData(businessId, data);
         data.set("page", "/pages/data/media_import.jsp");
-        return "/designs/auth.jsp";//shes gone.
+        return "/designs/auth.jsp";
     }
 
     public String importMedia(Long businessId, ResponseData data, HttpServletRequest req) throws Exception{
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
+        String businessPermission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(businessPermission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
         businessService.setData(businessId, data);
 
         List<Part> fileParts = req.getParts()
@@ -89,9 +148,6 @@ public class DataService {
                 activeMedia = original;
 
                 List<String> mediaBits = Arrays.asList(original.split("\\."));
-
-                System.out.println("mz " + mediaBits.size() + " o: " + original + " l:" + original.split(".").length);
-//Nike-Mens-Shoes.12-01.12.16.jpg
 
                 if (mediaBits.size() > 1) {
                     issue = "Unable to parse name from " + original + ". first bit from name";
@@ -145,6 +201,13 @@ public class DataService {
         if(!authService.isAuthenticated()){
             return "[redirect]/";
         }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
         businessService.setData(businessId, data);
 
         List<DataImport> dataImports = dataRepo.getList(businessId, "media");
@@ -155,6 +218,12 @@ public class DataService {
 
     public String viewMedias(Long businessId, Long importId, ResponseData data) {
         if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
             return "[redirect]/";
         }
         businessService.setData(businessId, data);
@@ -174,6 +243,12 @@ public class DataService {
 
     public String updateMedia(Long businessId, Long importId, ResponseData data, HttpServletRequest req) {
         if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String businessPermission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(businessPermission)){
+            data.set("message", "You don't have access to import for this business.");
             return "[redirect]/";
         }
 
@@ -274,4 +349,210 @@ public class DataService {
             }
         }
     }
+
+    public String viewIngestImport(Long businessId, ResponseData data) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+        businessService.setData(businessId, data);
+        data.set("page", "/pages/data/item_group_import.jsp");
+        return "/designs/auth.jsp";
+    }
+
+    public String viewIngests(Long businessId, Long importId, ResponseData data) {
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
+        businessService.setData(businessId, data);
+//        List<SpreadsheetIngest> spreadsheetIngests = dataRepo.getListSpreadSheets();
+//        for(SpreadsheetIngest spreadsheetIngest: spreadsheetIngests){
+//            ItemGroup group = groupRepo.get(spreadsheetIngest.getGroupId());
+//            List<GroupModel> groupModels = groupRepo.getListModels(group.getId());
+//            for(GroupModel groupModel : groupModels){
+//                List<GroupOption> groupOptions = groupRepo.getListGroupOptions(groupModel.getId());
+//                for(GroupOption groupOption : groupOptions){
+//                    GroupOptionValue groupModelOptionValue = groupRepo.getOptionValue(groupOption.getId());
+//                    groupOption.setOptionValue(groupModelOptionValue);
+//                }
+//                groupModel.setGroupOptions(groupOptions);
+//            }
+//            group.setGroupModels(groupModels);
+//
+//            List<PricingOption> groupPricingOptions = groupRepo.getListPricingOptions(group.getId());
+//            for(PricingOption groupPricingOption : groupPricingOptions){
+//                PricingValue groupPricingValue = groupRepo.getPricingValue(groupPricingOption.getId());
+//                groupPricingOption.setGroupPricingValue(groupPricingValue);
+//            }
+//            group.setGroupPricingOptions(groupPricingOptions);
+//        }
+//
+//        data.set("spreadsheetIngests", spreadsheetIngests);
+
+        data.set("page", "/pages/data/item_group_imports.jsp");
+        return "/designs/auth.jsp";
+    }
+
+
+
+    public String ingest(Long businessId, ResponseData data, HttpServletRequest req){
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
+        try{
+
+            Design design = designRepo.getBase(businessId);
+            new GroupIngest.Builder()
+                    .withDesignId(design.getId())
+                    .withBusinessId(businessId)
+                    .withModelRepo(modelRepo)
+                    .withGroupRepo(groupRepo)
+                    .withOptionRepo(optionRepo)
+                    .withPriceRepo(priceRepo)
+                    .withIngestRepo(ingestRepo)
+                    .withRequest(req)
+                    .build()
+                    .ingest();
+
+        }catch (IOException | ServletException ex){
+            ex.printStackTrace();
+            data.set("message", "Oh no! Unable to locate authentication credentials. Please contact someone!");
+            return "[redirect]/";
+        }
+        return "";
+    }
+
+    /**
+     *
+     *
+     * Corina
+     * Heidi
+     * Holly
+     * Jamie
+     * Beautiful Indian woman
+     * Seeyaa
+     *
+     * Started with
+     * 2 others
+     *
+     */
+
+
+
+
+
+
+
+    public String ingestOld(Long businessId, ResponseData data, HttpServletRequest req){
+        if(!authService.isAuthenticated()){
+            return "[redirect]/";
+        }
+
+        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
+        if(!authService.isAdministrator() &&
+                !authService.hasPermission(permission)){
+            data.set("message", "You don't have access to import for this business.");
+            return "[redirect]/";
+        }
+
+        try {
+            ItemGroupImport itemGroupImport = (ItemGroupImport)qio.set(req, ItemGroupImport.class);
+            if(itemGroupImport.getSpreadsheetId().equals("") ||
+                    itemGroupImport.getStartCell().equals("") ||
+                    itemGroupImport.getEndCell().equals("")){
+                data.set("itemGroupImport", itemGroupImport);
+                data.set("message", "Please make sure all fields are complete, we are sorry.");
+                return "[redirect]/" + businessId + "/imports/group_items";
+            }
+
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            final String range = "Class Data!" + itemGroupImport.getStartCell() + ":" + itemGroupImport.getEndCell();
+
+            Sheets service = null;
+
+
+            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+
+            ValueRange response = service.spreadsheets().values()
+                    .get(itemGroupImport.getSpreadsheetId(), range)
+                    .execute();
+
+            List<List<Object>> values = response.getValues();
+
+            if (values != null &&
+                    !values.isEmpty()) {
+                for (int z = 0; z < values.size(); z++) {
+                    List<Object> entries = values.get(z);
+                    for(Object entry : entries){
+                        System.out.print(entry);
+                    }
+                    System.out.println("");
+                }
+            }
+            if (values == null ||
+                    values.isEmpty()) {
+                data.set("itemGroupImport", itemGroupImport);
+                data.set("message", "Whao nelly, something aint right. Please make sure your data is correct.");
+                return "[redirect]/" + businessId + "/imports/group_items";
+            }
+
+            System.out.println("Name, Major");
+
+        } catch (IOException | GeneralSecurityException ex) {
+            ex.printStackTrace();
+            data.set("message", "Oh no! Unable to locate authentication credentials. Please contact someone!");
+            return "[redirect]/";
+        }
+
+        data.set("message", "Successfully retrieved and saved spreadsheet data.");
+        return "[redirect]/" + businessId + "/imports/group_items";
+    }
+
+
+    public Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException {
+        InputStream in = DataService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        if (in == null) {
+            throw new FileNotFoundException("creds not found : " + CREDENTIALS_FILE_PATH);
+        }
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+
+
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setAccessType("offline")
+                .build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+
+//        List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
+//        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, clientSecrets, scopes).setDataStoreFactory(new MemoryDataStoreFactory())
+//                .setAccessType("offline").build();
+//        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("117778828736287500064");
+
+    }
+
 }
