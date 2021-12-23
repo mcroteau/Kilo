@@ -41,7 +41,7 @@ public class ModelRepo {
     }
 
     public List<GroupModel> getList(long id){
-        String sql = "select * from group_models where group_id = [+] order by id desc";
+        String sql = "select * from group_models where group_id = [+] order by id asc";
         List<GroupModel> groupModels = (ArrayList) qio.getList(sql, new Object[]{ id }, GroupModel.class);
         return groupModels;
     }
@@ -69,10 +69,27 @@ public class ModelRepo {
         return true;
     }
 
-    public boolean delete(long id){
+    public boolean delete(long groupId){
         String sql = "delete from group_models where id = [+]";
-        qio.delete(sql, new Object[] { id });
+        qio.delete(sql, new Object[] { groupId });
         return true;
     }
 
+    public boolean delete(String modelNumber){
+        String sql = "delete from group_models where model_number = '[+]'";
+        qio.delete(sql, new Object[] { modelNumber });
+        return true;
+    }
+
+    public boolean deleteIngest(Long ingestId) {
+        String sql = "delete from group_models where ingest_id = [+]";
+        qio.delete(sql, new Object[] { ingestId });
+        return true;
+    }
+
+    public boolean deleteGroup(Long groupId) {
+        String sql = "delete from group_models where group_id = [+]";
+        qio.delete(sql, new Object[] { groupId });
+        return true;
+    }
 }

@@ -289,6 +289,7 @@ create table if not exists group_option_values(
 	ingest_id bigint NOT NULL REFERENCES ingests(id),
 	business_id bigint NOT NULL REFERENCES businesses(id),
 	model_id bigint NOT NULL REFERENCES group_models(id),
+	group_id bigint NOT NULL REFERENCES item_groups(id),
     value character varying (250) default '',
     image_uri character varying (250) default ''
 );

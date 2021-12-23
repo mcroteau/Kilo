@@ -75,11 +75,12 @@ public class OptionRepo {
     }
 
     public Boolean saveValue(GroupOptionValue groupValue){
-        String sql = "insert into group_option_values (ingest_id, model_id, business_id, value) values ([+],[+],[+],'[+]')";
+        String sql = "insert into group_option_values (ingest_id, model_id, business_id, group_id, value) values ([+],[+],[+],[+],'[+]')";
         qio.save(sql, new Object[] {
                 groupValue.getIngestId(),
                 groupValue.getModelId(),
                 groupValue.getBusinessId(),
+                groupValue.getGroupId(),
                 groupValue.getValue()
         });
         return true;
@@ -101,9 +102,33 @@ public class OptionRepo {
         return true;
     }
 
-    public boolean deleteValues(Long id) {
+    public boolean deleteOptions(Long ingestId) {
+        String sql = "delete from group_options where ingest_id = [+]";
+        qio.delete(sql, new Object[] { ingestId });
+        return true;
+    }
+
+    public boolean deleteValuesModel(Long modelId) {
         String sql = "delete from group_option_values where model_id = [+]";
-        qio.delete(sql, new Object[] { id });
+        qio.delete(sql, new Object[] { modelId });
+        return true;
+    }
+
+    public boolean deleteValues(Long ingestId) {
+        String sql = "delete from group_option_values where ingest_id = [+]";
+        qio.delete(sql, new Object[] { ingestId });
+        return true;
+    }
+
+    public boolean deleteOptionsGroup(Long groupId) {
+        String sql = "delete from group_options where group_id = [+]";
+        qio.delete(sql, new Object[] { groupId });
+        return true;
+    }
+
+    public boolean deleteValuesGroup(Long groupId) {
+        String sql = "delete from group_option_values where group_id = [+]";
+        qio.delete(sql, new Object[] { groupId });
         return true;
     }
 }

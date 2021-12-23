@@ -31,11 +31,4 @@ public class GroupHandler {
         return groupService.saveOption(businessId, data, req);
     }
 
-    @Post("/{{businessId}}/groups/options/delete/{{id}}")
-    public String deleteOption(HttpServletRequest req,
-                             ResponseData data,
-                             @Variable Long businessId,
-                             @Variable Long id){
-        return groupService.deleteOption(id, businessId, data, req);
-    }
 }

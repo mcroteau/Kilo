@@ -5,6 +5,7 @@ public class GroupOptionValue {
     Long ingestId;
     Long businessId;
     Long modelId;
+    Long groupId;
     String value;
     String imageUri;
 
@@ -38,6 +39,14 @@ public class GroupOptionValue {
 
     public void setModelId(Long modelId) {
         this.modelId = modelId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public String getValue() {

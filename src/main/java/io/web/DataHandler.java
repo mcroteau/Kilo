@@ -85,11 +85,19 @@ public class DataHandler {
         return dataService.ingest(businessId, data, req);
     }
 
-    @Post("/imports/item_groups/delete/{{businessId}}/{{od}}")
-    public String deleteGroups(HttpServletRequest req,
+    @Post("/imports/item_groups/delete/{{businessId}}/{{id}}")
+    public String deleteGroupImport(HttpServletRequest req,
                          ResponseData data,
                          @Variable Long businessId,
-                         @Variable Long itemGroupId) {
-        return dataService.deleteGroups(itemGroupId, businessId, data, req);
+                         @Variable Long ingestId) {
+        return dataService.deleteGroupImport(ingestId, businessId, data, req);
+    }
+
+    @Post("/imports/item_groups/group/delete/{{businessId}}/{{id}}")
+    public String deleteGroups(HttpServletRequest req,
+                               ResponseData data,
+                               @Variable Long businessId,
+                               @Variable Long groupId) {
+        return dataService.deleteImportedGroup(groupId, businessId, data, req);
     }
 }

@@ -6,12 +6,16 @@
     #content-wrapper{width:100%;}
 </style>
 
+<a href="${pageContext.request.contextPath}/snapshot/${business.id}" class="href-dotted">&larr;&nbsp;Back</a>
+<br class="clear"/>
+
 <c:if test="${not empty message}">
     <p class="notify">${message}</p>
 </c:if>
 
+
 <h3 class="left-float">Item Groups</h3>
-<a href="${pageContext.request.contextPath}/imports/item_groups/new/${business.id}" class="button retro right-float" style="margin-top:20px;">New Import</a>
+<a href="${pageContext.request.contextPath}/imports/item_groups/new/${business.id}" class="button orange right-float" style="margin-top:20px;">New Item Group Import</a>
 <br class="clear"/>
 
 <c:if test="${ingests.size() > 0}">
@@ -39,14 +43,13 @@
                             <td>${optionValue.value}</td>
                         </c:forEach>
                         <c:forEach var="pricingValue" items="${groupModel.pricingValues}" varStatus="idxa">
-                            <td>${pricingValue.price}</td>
+                            <td>$${pricingValue.price}</td>
                         </c:forEach>
                     </tr>
                 </c:forEach>
             </table>
-
             <div class="button-wrapper">
-                <form action="${pageContext.request.contextPath}/imports/item_groups/delete/${business.id}/${itemGroup.id}">
+                <form action="${pageContext.request.contextPath}/imports/item_groups/group/delete/${business.id}/${itemGroup.id}" method="post">
                     <input type="submit" value="Delete Above Item Group" class="button remove"/>
                 </form>
             </div>

@@ -69,10 +69,28 @@ public class PriceRepo {
         return true;
     }
 
-    public boolean delete(long id){
-        String sql = "delete from group_models where id = [+]";
-        qio.delete(sql, new Object[] { id });
+
+    public boolean deleteOptions(Long ingestId) {
+        String sql = "delete from pricing_options where ingest_id = [+]";
+        qio.delete(sql, new Object[] { ingestId });
         return true;
     }
 
+    public boolean deleteValues(Long ingestId) {
+        String sql = "delete from pricing_values where ingest_id = [+]";
+        qio.delete(sql, new Object[] { ingestId });
+        return true;
+    }
+
+    public boolean deleteOptionsGroup(Long groupId) {
+        String sql = "delete from pricing_options where group_id = [+]";
+        qio.delete(sql, new Object[] { groupId });
+        return true;
+    }
+
+    public boolean deleteValuesGroup(Long groupId) {
+        String sql = "delete from pricing_values where group_id = [+]";
+        qio.delete(sql, new Object[] { groupId });
+        return true;
+    }
 }

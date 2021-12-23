@@ -195,20 +195,4 @@ public class GroupService {
 
     }
 
-    public String deleteOption(Long id, Long businessId, ResponseData data, HttpServletRequest req) {
-        if(!authService.isAuthenticated()){
-            return "[redirect]/";
-        }
-        String permission = Kilo.BUSINESS_MAINTENANCE + businessId;
-        if(!authService.isAdministrator() &&
-                !authService.hasPermission(permission)){
-            data.set("message", "Whoa! Not authorized to view this business.");
-            return "[redirect]/";
-        }
-
-        Business business = businessRepo.get(businessId);
-        groupRepo.deleteOption(id);
-        return "[redirect]/" + businessId + "/groups/options/create";
-    }
-
 }
