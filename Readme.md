@@ -64,5 +64,8 @@ sitemaps for item
 shopping cart shipping info require email!
 
 
+Cox
+Brodan
+
 ### H2 Allow for External Connections
 java -jar ~/.m2/repository/com/h2database/h2/1.4.200/h2-1.4.200.jar -tcpAllowOthers
