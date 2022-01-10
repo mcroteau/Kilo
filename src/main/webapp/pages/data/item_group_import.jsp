@@ -14,9 +14,7 @@
 </div>
 
 <script>
-
     $(document).ready(function(){
-
         const $form = $('#import-form');
         let $submit = $('#import-submit');
 
@@ -25,6 +23,5 @@
             this.value = "Importing Data...";
             $form.submit();
         })
-
     });
 </script>
